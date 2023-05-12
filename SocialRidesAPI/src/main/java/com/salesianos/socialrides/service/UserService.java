@@ -3,6 +3,7 @@ package com.salesianos.socialrides.service;
 import com.salesianos.socialrides.exception.user.NotLikedPostsException;
 import com.salesianos.socialrides.exception.user.UserNotFoundException;
 import com.salesianos.socialrides.files.service.StorageService;
+import com.salesianos.socialrides.model.page.PageResponse;
 import com.salesianos.socialrides.model.post.dto.PostResponse;
 import com.salesianos.socialrides.model.user.User;
 import com.salesianos.socialrides.model.user.UserRole;
@@ -109,13 +110,13 @@ public class UserService {
 
     public boolean existsByEmail(String email){ return userRepository.existsByEmail(email); }
 
-    public Page<List<PostResponse>> getLikedPosts(Pageable pageable, UUID userId){
+    public PageResponse<List<PostResponse>> getLikedPosts(Pageable pageable, UUID userId){
 
-        Page<List<PostResponse>> page = userRepository.findLikedPosts(pageable, userId);
+        PageResponse<List<PostResponse>> users = new PageResponse<>(userRepository.findLikedPosts(pageable, userId));
 
-        if(page.isEmpty())
+        if(users.getContent().isEmpty())
             throw new NotLikedPostsException();
-        return page;
+        return users;
     }
 
     public UserResponse getProfile(UUID id){

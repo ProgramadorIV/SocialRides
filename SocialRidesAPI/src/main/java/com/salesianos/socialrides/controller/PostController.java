@@ -1,6 +1,7 @@
 package com.salesianos.socialrides.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.salesianos.socialrides.model.page.PageResponse;
 import com.salesianos.socialrides.model.post.Post;
 import com.salesianos.socialrides.model.post.dto.CreatePostRequest;
 import com.salesianos.socialrides.model.post.dto.PostResponse;
@@ -120,8 +121,8 @@ public class PostController {
                     content = @Content)
     })
     @GetMapping("/post")
-    //@JsonView({View.PostView.PostListView.class}) todo -- No sale porque esta dentro de un pageable
-    public Page<List<PostResponse>> getAllPosts(/*@PageableDefault(page = 0, size = 10)*/@PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC)Pageable pageable){
+    @JsonView({View.PostView.PostListView.class}) // todo -- No sale porque esta dentro de un pageable
+    public PageResponse<List<PostResponse>> getAllPosts(/*@PageableDefault(page = 0, size = 10)*/@PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC)Pageable pageable){
         return postService.findAll(pageable);
     }
 
@@ -199,9 +200,9 @@ public class PostController {
                     content = @Content)
     })
     @GetMapping("/auth/post")
-    //@JsonView({View.PostView.PostListView.class})
-    public Page<List<PostResponse>> getAllUserPost(@PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable,
-                                                   @AuthenticationPrincipal User user){
+    @JsonView({View.PostView.PostListView.class})
+    public PageResponse<List<PostResponse>> getAllUserPost(@PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable,
+                                                           @AuthenticationPrincipal User user){
         return postService.findAllByUser(pageable, user.getId());
     }
 

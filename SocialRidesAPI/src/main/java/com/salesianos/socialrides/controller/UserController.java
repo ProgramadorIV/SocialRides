@@ -1,6 +1,7 @@
 package com.salesianos.socialrides.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.salesianos.socialrides.model.page.PageResponse;
 import com.salesianos.socialrides.model.post.dto.PostResponse;
 import com.salesianos.socialrides.model.user.User;
 import com.salesianos.socialrides.model.user.dto.*;
@@ -264,8 +265,9 @@ public class UserController {
                     content = @Content)
     })
     @GetMapping("/auth/user/like")
-    public Page<List<PostResponse>> getLikedPosts(@PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable,
-                                                  @AuthenticationPrincipal User user){
+    @JsonView(View.PostView.PostListView.class)
+    public PageResponse<List<PostResponse>> getLikedPosts(@PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable,
+                                                          @AuthenticationPrincipal User user){
         return userService.getLikedPosts(pageable, user.getId());
     }
 

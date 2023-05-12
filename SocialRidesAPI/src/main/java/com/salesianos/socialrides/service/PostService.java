@@ -5,6 +5,7 @@ import com.salesianos.socialrides.exception.post.NoUserPostsException;
 import com.salesianos.socialrides.exception.post.PostNotFoundException;
 import com.salesianos.socialrides.exception.user.UserNotFoundException;
 import com.salesianos.socialrides.files.service.StorageService;
+import com.salesianos.socialrides.model.page.PageResponse;
 import com.salesianos.socialrides.model.post.Post;
 import com.salesianos.socialrides.model.post.dto.CreatePostRequest;
 import com.salesianos.socialrides.model.post.dto.PostResponse;
@@ -12,6 +13,7 @@ import com.salesianos.socialrides.model.user.User;
 import com.salesianos.socialrides.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -41,12 +43,14 @@ public class PostService {
 
     }*/
 
-    public Page<List<PostResponse>> findAllByUser(Pageable pageable, UUID id){
-         Page<List<PostResponse>> posts = postRepository.findAllByUser(pageable, id);
-         if(posts.isEmpty())
-             throw new NoUserPostsException();
+    public PageResponse<List<PostResponse>> findAllByUser(Pageable pageable, UUID id){
 
-         return posts;
+        PageResponse<List<PostResponse>> pageResponse = new PageResponse<>(postRepository.findAllByUser(pageable, id));
+
+        if(pageResponse.getContent().isEmpty())
+            throw new NoUserPostsException();
+
+        return pageResponse;
     }
 
     public Post findPostWithInteractions(Long id){
@@ -71,13 +75,14 @@ public class PostService {
         return PostResponse.of(post);
     }
 
-    public Page<List<PostResponse>> findAll(Pageable pageable){
+    public PageResponse<List<PostResponse>> findAll(Pageable pageable){
 
-        Page<List<PostResponse>> posts = postRepository.findAllPosts(pageable);
-        if (posts.isEmpty())
+        PageResponse<List<PostResponse>> pageResponse = new PageResponse<>(postRepository.findAllPosts(pageable));
+
+        if (pageResponse.getContent().isEmpty())
             throw new NoPostsException();
 
-        return posts;
+        return pageResponse;
     }
 
     public PostResponse editPost(Long id, CreatePostRequest editedPost, MultipartFile file){
