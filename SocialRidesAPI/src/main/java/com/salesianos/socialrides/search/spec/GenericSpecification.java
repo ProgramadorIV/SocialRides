@@ -48,7 +48,7 @@ public class GenericSpecification<T> implements Specification<T> {
         } else if (operator.equalsIgnoreCase(":")) {
             if (isString(type)) {
                 return criteriaBuilder.like(
-                        root.get(searchCriteria.getKey()), "%" + searchCriteria.getValue().toString() + "%"
+                        criteriaBuilder.lower(root.get(key)), "%" + ((String)value).toLowerCase() + "%"
                 );
             }
             // Esta parte sigue siendo mejorable pero ahora está mejor :)
