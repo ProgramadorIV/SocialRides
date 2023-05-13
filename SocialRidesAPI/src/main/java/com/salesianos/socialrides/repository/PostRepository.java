@@ -4,14 +4,16 @@ import com.salesianos.socialrides.model.post.Post;
 import com.salesianos.socialrides.model.post.dto.PostResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificationExecutor<Post> {
 
     @Query("""
             SELECT new com.salesianos.socialrides.model.post.dto.PostResponse(
@@ -19,6 +21,13 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             FROM Post p
             """)
     Page<List<PostResponse>> findAllPosts(Pageable pageable);
+
+    @Query("""
+            SELECT new com.salesianos.socialrides.model.post.dto.PostResponse(
+            p.id, p.title, p.description, p.img, p.location, p.dateTime)
+            FROM Post p
+            """)
+    Page<List<PostResponse>> findAllPosts(Specification<Post> spec, Pageable pageable);
 
     @Query("""
             SELECT new com.salesianos.socialrides.model.post.dto.PostResponse(

@@ -11,10 +11,14 @@ import com.salesianos.socialrides.model.post.dto.CreatePostRequest;
 import com.salesianos.socialrides.model.post.dto.PostResponse;
 import com.salesianos.socialrides.model.user.User;
 import com.salesianos.socialrides.repository.PostRepository;
+import com.salesianos.socialrides.search.spec.GenericSpecificationBuilder;
+import com.salesianos.socialrides.search.util.SearchCriteria;
+import com.salesianos.socialrides.search.util.SearchCriteriaExtractor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -75,14 +79,16 @@ public class PostService {
         return PostResponse.of(post);
     }
 
-    public PageResponse<List<PostResponse>> findAll(Pageable pageable){
+    public PageResponse<List<PostResponse>> findAll(String searchQuery, Pageable pageable){
+        List<PostResponse> posts = List.of();
+        List<SearchCriteria> searchCriteria = SearchCriteriaExtractor.extractSearchCriteriaList(searchQuery);
+        Specification<Post> spec = (new GenericSpecificationBuilder<Post>(searchCriteria)).build();
+        Page<PostResponse> page = postRepository.findAll(spec, pageable).map(PostResponse::fromUser);
 
-        PageResponse<List<PostResponse>> pageResponse = new PageResponse<>(postRepository.findAllPosts(pageable));
-
-        if (pageResponse.getContent().isEmpty())
+        if (page.isEmpty())
             throw new NoPostsException();
 
-        return pageResponse;
+        return new PageResponse(page);
     }
 
     public PostResponse editPost(Long id, CreatePostRequest editedPost, MultipartFile file){

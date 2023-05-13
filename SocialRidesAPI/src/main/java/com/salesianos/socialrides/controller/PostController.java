@@ -121,9 +121,11 @@ public class PostController {
                     content = @Content)
     })
     @GetMapping("/post")
-    @JsonView({View.PostView.PostListView.class}) // todo -- No sale porque esta dentro de un pageable
-    public PageResponse<List<PostResponse>> getAllPosts(/*@PageableDefault(page = 0, size = 10)*/@PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC)Pageable pageable){
-        return postService.findAll(pageable);
+    @JsonView({View.PostView.PostListView.class})
+    public PageResponse<List<PostResponse>> getAllPosts(
+            @RequestParam(value = "$", defaultValue = "")String searchQuery,
+            @PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC)Pageable pageable){
+        return postService.findAll(searchQuery, pageable);
     }
 
 
