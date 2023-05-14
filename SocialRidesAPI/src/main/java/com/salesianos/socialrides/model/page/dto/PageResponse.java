@@ -1,4 +1,4 @@
-package com.salesianos.socialrides.model.page;
+package com.salesianos.socialrides.model.page.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.salesianos.socialrides.model.post.dto.PostResponse;

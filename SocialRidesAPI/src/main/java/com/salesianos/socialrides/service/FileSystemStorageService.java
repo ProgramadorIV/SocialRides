@@ -1,7 +1,7 @@
-package com.salesianos.socialrides.files.service;
+package com.salesianos.socialrides.service;
 
 import com.salesianos.socialrides.exception.storage.StorageException;
-import com.salesianos.socialrides.files.utils.MediaTypeUrlResource;
+import com.salesianos.socialrides.utils.MediaTypeUrlResource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.salesianos.socialrides.files.dto;
+package com.salesianos.socialrides.model.file.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

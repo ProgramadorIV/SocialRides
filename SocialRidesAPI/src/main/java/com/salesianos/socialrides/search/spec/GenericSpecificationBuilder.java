@@ -24,7 +24,8 @@ public class GenericSpecificationBuilder<T>{
         for(int i= 0; i<params.size(); i++){
             result = result.and(new GenericSpecification<>(params.get(i)));
         }
-        return result;
+        return result
+                ;
     }
 
 }
