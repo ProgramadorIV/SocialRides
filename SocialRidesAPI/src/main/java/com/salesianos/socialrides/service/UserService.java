@@ -8,14 +8,25 @@ import com.salesianos.socialrides.model.user.User;
 import com.salesianos.socialrides.model.user.UserRole;
 import com.salesianos.socialrides.model.user.dto.CreateUserRequest;
 import com.salesianos.socialrides.model.user.dto.EditUserRequest;
+import com.salesianos.socialrides.model.user.dto.LoginRequest;
 import com.salesianos.socialrides.model.user.dto.UserResponse;
 import com.salesianos.socialrides.repository.UserRepository;
+import com.salesianos.socialrides.security.jwt.refresh.RefreshToken;
+import com.salesianos.socialrides.security.jwt.refresh.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.time.Instant;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +34,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService{
 
     private final PasswordEncoder passwordEncoder;
 
@@ -124,4 +135,20 @@ public class UserService {
         );
     }
 
+
+    /*public UserResponse logIn(LoginRequest loginRequest){
+        Authentication authentication =
+                authManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                loginRequest.getUsername(),
+                                loginRequest.getPassword()
+                        )
+                );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtProvider.generateToken(authentication);
+        User user = (User) authentication.getPrincipal();
+
+        refreshTokenService.deleteByUser(user);
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
+    }*/
 }

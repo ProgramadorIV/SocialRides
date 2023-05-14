@@ -10,6 +10,7 @@ import com.salesianos.socialrides.security.jwt.refresh.RefreshToken;
 import com.salesianos.socialrides.security.jwt.refresh.RefreshTokenException;
 import com.salesianos.socialrides.security.jwt.refresh.RefreshTokenRequest;
 import com.salesianos.socialrides.security.jwt.refresh.RefreshTokenService;
+import com.salesianos.socialrides.service.AuthenticationService;
 import com.salesianos.socialrides.service.UserService;
 import com.salesianos.socialrides.view.View;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,14 +33,19 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,14 +56,13 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-    private final AuthenticationManager authManager;
-    private final JwtProvider jwtProvider;
-    private final RefreshTokenService refreshTokenService;
+
+    private final AuthenticationService authenticationService;
 
     @JsonView(View.UserView.CreatedView.class)
     @PostMapping("/auth/register")
     public ResponseEntity<UserResponse> createUserWithUserRole(@Valid @RequestPart("user") CreateUserRequest newUser,
-                                                               @RequestPart("file")MultipartFile file){
+                                                               @RequestPart("file")MultipartFile file) {
 
         UserResponse user = UserResponse.fromUser(userService.createUserWithUserRole(newUser, file));
         URI uri = ServletUriComponentsBuilder
@@ -85,21 +90,7 @@ public class UserController {
     @PostMapping("/auth/login")
     public ResponseEntity<UserResponse> login(@Valid @RequestBody LoginRequest loginRequest){
 
-        Authentication authentication =
-                authManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(
-                                loginRequest.getUsername(),
-                                loginRequest.getPassword()
-                        )
-                );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtProvider.generateToken(authentication);
-        User user = (User) authentication.getPrincipal();
-
-        refreshTokenService.deleteByUser(user);
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(UserResponse.toLoggedUser(user, token, refreshToken.getToken()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(authenticationService.login(loginRequest));
     }
 
     @JsonView(View.UserView.CreatedView.class)
@@ -130,23 +121,8 @@ public class UserController {
 
     @PostMapping("/refreshtoken")
     public ResponseEntity<?> refreshToken(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest){
-        String refreshedToken = refreshTokenRequest.getRefreshedToken();
-
-        return refreshTokenService.findByToken(refreshedToken)
-                .map(refreshTokenService::verify)
-                .map(RefreshToken::getUser)
-                .map(user -> {
-                    String token = jwtProvider.generateToken(user);
-                    refreshTokenService.deleteByUser(user);
-                    RefreshToken refreshedTokenV2 = refreshTokenService.createRefreshToken(user);
-
-                    return ResponseEntity.status(HttpStatus.CREATED)
-                            .body(JwtUserResponse.builder()
-                                    .token(token)
-                                    .refreshedToken(refreshedTokenV2.getToken())
-                                    .build()
-                            );
-                }).orElseThrow(() -> new RefreshTokenException("Refresh token could not be found"));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(authenticationService.refreshToken(refreshTokenRequest));
     }
 
     @Operation(summary = "Returns searched user profile")
@@ -313,4 +289,7 @@ public class UserController {
     public UserResponse getProfile(@AuthenticationPrincipal User user){
         return userService.getProfile(user.getId());
     }
+
+
+
 }
