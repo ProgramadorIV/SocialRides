@@ -101,6 +101,12 @@ public class PostService {
     }
 
     public void deletePost(Long id){
-        postRepository.deleteById(id);
+
+        postRepository.deleteById(
+                postRepository.findById(id)
+                        .orElseThrow(
+                                () -> new PostNotFoundException(id)
+                        ).getId()
+        );
     }
 }
