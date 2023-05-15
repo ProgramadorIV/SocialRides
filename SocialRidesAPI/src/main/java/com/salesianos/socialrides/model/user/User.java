@@ -1,5 +1,6 @@
 package com.salesianos.socialrides.model.user;
 
+import com.salesianos.socialrides.model.chat.Chat;
 import com.salesianos.socialrides.model.like.Likee;
 import com.salesianos.socialrides.model.post.Post;
 import com.salesianos.socialrides.utils.EnumSetAttributeConverter;
@@ -87,6 +88,10 @@ public class User implements UserDetails {
     @Builder.Default
     private List<Likee> likes = new ArrayList<>();
 
+    @ManyToMany
+    @Builder.Default
+    private Set<Chat> chats = new HashSet<>();
+
     //**************************
     @Builder.Default
     private boolean accountNonExpired = true;
@@ -97,7 +102,6 @@ public class User implements UserDetails {
     @Builder.Default
     private boolean enabled = true;
 
-
     @Convert(converter = EnumSetAttributeConverter.class)
     private Set<UserRole> roles;
 
@@ -106,7 +110,6 @@ public class User implements UserDetails {
 
     @Builder.Default
     private LocalDateTime lastPasswordChangeAt = LocalDateTime.now();
-
 
 
     @Override
