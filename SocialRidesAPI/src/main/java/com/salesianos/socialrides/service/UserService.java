@@ -125,5 +125,4 @@ public class UserService {
                         .orElseThrow(UserNotFoundException::new)
         );
     }
-
 }

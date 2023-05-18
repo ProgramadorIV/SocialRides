@@ -82,13 +82,15 @@ public class PostService {
     public PageResponse<List<PostResponse>> findAll(String searchQuery, Pageable pageable){
         List<PostResponse> posts = List.of();
         List<SearchCriteria> searchCriteria = SearchCriteriaExtractor.extractSearchCriteriaList(searchQuery);
-        Specification<Post> spec = (new GenericSpecificationBuilder<Post>(searchCriteria)).build();
-        Page<PostResponse> page = postRepository.findAll(spec, pageable).map(PostResponse::fromUser);
+        Specification<Post> spec = (new GenericSpecificationBuilder<Post>(searchCriteria, Post.class)).build();
+        if(spec != null){
+            Page<PostResponse> page = postRepository.findAll(spec, pageable).map(PostResponse::fromUser);
+            if (page.isEmpty())
+                throw new NoPostsException();
 
-        if (page.isEmpty())
-            throw new NoPostsException();
-
-        return new PageResponse(page);
+            return new PageResponse(page);
+        }
+        return new PageResponse(postRepository.findAll(pageable).map(PostResponse::fromUser));
     }
 
     public PostResponse editPost(Long id, CreatePostRequest editedPost, MultipartFile file){
@@ -107,4 +109,12 @@ public class PostService {
     public void deletePost(Long id){
         postRepository.deleteById(id);
     }
+    /*public LikeResponse likePost(User user, Long postId){
+
+        user.getLikes().stream().map(l -> {
+            if(l.getPost().getId().equals(postId))
+                return l;
+            return null;
+        }).findAny().orElse();
+    }*/
 }

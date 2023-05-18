@@ -1,5 +1,6 @@
 package com.salesianos.socialrides.search.spec;
 
+import com.salesianos.socialrides.search.util.QueryableEntity;
 import com.salesianos.socialrides.search.util.SearchCriteria;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
@@ -28,6 +29,7 @@ public class GenericSpecification<T> implements Specification<T> {
         String key = searchCriteria.getKey();
         String operator = searchCriteria.getOperator();
         Object value = searchCriteria.getValue();
+
 
         if (operator.equalsIgnoreCase(">")) {
 

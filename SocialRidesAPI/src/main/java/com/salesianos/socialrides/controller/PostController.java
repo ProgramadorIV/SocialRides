@@ -261,7 +261,6 @@ public class PostController {
                 .toUri();
         return ResponseEntity.created(uri).body(post);
     }
-    //TODO -- Preguntar si el preauthorize está bien
 
     @Operation(summary = "Deletes a post specified by id")
     @ApiResponses( value = {
