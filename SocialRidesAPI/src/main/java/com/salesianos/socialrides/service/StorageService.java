@@ -1,4 +1,4 @@
-package com.salesianos.socialrides.files.service;
+package com.salesianos.socialrides.service;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;

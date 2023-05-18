@@ -1,8 +1,8 @@
-package com.salesianos.socialrides.files.controller;
+/*package com.salesianos.socialrides.files.controller;
 
-import com.salesianos.socialrides.files.dto.FileResponse;
-import com.salesianos.socialrides.files.service.StorageService;
-import com.salesianos.socialrides.files.utils.MediaTypeUrlResource;
+import com.salesianos.socialrides.model.file.dto.FileResponse;
+import com.salesianos.socialrides.service.StorageService;
+import com.salesianos.socialrides.utils.MediaTypeUrlResource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -74,4 +74,4 @@ public class FileController {
                 .body(resource);
     }
 
-}
+}*/

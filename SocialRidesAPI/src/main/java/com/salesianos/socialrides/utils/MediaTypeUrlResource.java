@@ -1,4 +1,4 @@
-package com.salesianos.socialrides.files.utils;
+package com.salesianos.socialrides.utils;
 
 import com.salesianos.socialrides.exception.storage.StorageException;
 import org.apache.tika.Tika;

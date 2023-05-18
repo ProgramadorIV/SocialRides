@@ -1,11 +1,11 @@
 package com.salesianos.socialrides.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.salesianos.socialrides.model.page.PageResponse;
-import com.salesianos.socialrides.model.post.Post;
+import com.salesianos.socialrides.model.page.dto.PageResponse;
 import com.salesianos.socialrides.model.post.dto.CreatePostRequest;
 import com.salesianos.socialrides.model.post.dto.PostResponse;
 import com.salesianos.socialrides.model.user.User;
+import com.salesianos.socialrides.repository.PostRepository;
 import com.salesianos.socialrides.service.PostService;
 import com.salesianos.socialrides.view.View;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +18,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -39,6 +38,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final PostRepository postRepository;
 
 
     @Operation(summary = "Creates a new post.")
@@ -249,10 +249,17 @@ public class PostController {
     )
     @Parameter(description = "Post to edit id", name = "id", required = true)
     @JsonView({View.PostView.PostWithEverythingView.class})
-    @PreAuthorize("@postRepository.existsById(#id)? @postRepository.findById(#id).get().user.username == authentication.principal.getUsername() : false")
+    @PreAuthorize("(@postRepository.findById(#id).orElse(null) == null" +
+            "||"+
+            "@userRepository.findById(#user.getId()).get().equals(" +
+            "@postRepository.existsById(#id)? " +
+            "@postRepository.findById(#id).get().getUser() : null" +
+            ")" +
+            ") ? true : false")
     @PutMapping("auth/post/{id}")
     public ResponseEntity<PostResponse> editPost(@PathVariable Long id,
                                  @Valid @RequestPart("post") CreatePostRequest editedPost,
+                                 @AuthenticationPrincipal User user,
                                  @RequestPart("file") MultipartFile file){
         PostResponse post =postService.editPost(id, editedPost, file);
         URI uri = ServletUriComponentsBuilder
@@ -269,9 +276,16 @@ public class PostController {
             @ApiResponse(responseCode = "403", description = "Access denied")
     })
     @Parameter(description = "Post id", name = "id", required = true)
-    @PreAuthorize("@postRepository.existsById(#id)? @postRepository.findById(#id).get().user.username == authentication.principal.getUsername() : false")
+    @PreAuthorize("(@postRepository.findById(#id).orElse(null) == null" +
+                    "||"+
+                    "@userRepository.findById(#user.getId()).get().equals(" +
+                            "@postRepository.existsById(#id)? " +
+                            "@postRepository.findById(#id).get().getUser() : null" +
+                        ")" +
+                    ") ? true : false")
+    //@postRepository.existsById(#id)? @postRepository.findById(#id).get().user.username == authentication.principal.getUsername() : false"
     @DeleteMapping("auth/post/{id}")
-    public ResponseEntity<?> deletePost(@PathVariable Long id){
+    public ResponseEntity<?> deletePost(@PathVariable Long id, @AuthenticationPrincipal User user){
         postService.deletePost(id);
         return ResponseEntity.noContent().build();
     }

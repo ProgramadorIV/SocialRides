@@ -4,8 +4,7 @@ import com.salesianos.socialrides.exception.post.NoPostsException;
 import com.salesianos.socialrides.exception.post.NoUserPostsException;
 import com.salesianos.socialrides.exception.post.PostNotFoundException;
 import com.salesianos.socialrides.exception.user.UserNotFoundException;
-import com.salesianos.socialrides.files.service.StorageService;
-import com.salesianos.socialrides.model.page.PageResponse;
+import com.salesianos.socialrides.model.page.dto.PageResponse;
 import com.salesianos.socialrides.model.post.Post;
 import com.salesianos.socialrides.model.post.dto.CreatePostRequest;
 import com.salesianos.socialrides.model.post.dto.PostResponse;
@@ -16,13 +15,10 @@ import com.salesianos.socialrides.search.util.SearchCriteria;
 import com.salesianos.socialrides.search.util.SearchCriteriaExtractor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 import java.util.UUID;
@@ -107,7 +103,13 @@ public class PostService {
     }
 
     public void deletePost(Long id){
-        postRepository.deleteById(id);
+
+        postRepository.deleteById(
+                postRepository.findById(id)
+                        .orElseThrow(
+                                () -> new PostNotFoundException(id)
+                        ).getId()
+        );
     }
     /*public LikeResponse likePost(User user, Long postId){
 
