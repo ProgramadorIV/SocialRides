@@ -18,5 +18,5 @@ public interface LikeRepository extends JpaRepository<Likee, LikePk>, JpaSpecifi
             FROM Likee l
             WHERE l.post.id = :id
             """)
-    public Page<LikeResponse> findAllByPost(Pageable pageable, Long id);
+    Page<LikeResponse> findAllByPost(Pageable pageable, Long id);
 }

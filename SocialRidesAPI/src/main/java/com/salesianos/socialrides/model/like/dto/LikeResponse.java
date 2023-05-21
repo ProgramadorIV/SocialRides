@@ -26,7 +26,7 @@ public class LikeResponse {
     @JsonView({View.PostView.PostWithEverythingView.class, View.LikesView.class})
     private String username;
 
-    @JsonFormat(pattern = "dd/MM/yyyy hh:HH:ss")
+    @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss")
     @JsonView({View.PostView.PostWithEverythingView.class})
     private LocalDateTime dateTime;
 

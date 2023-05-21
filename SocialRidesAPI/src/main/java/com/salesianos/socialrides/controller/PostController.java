@@ -1,6 +1,8 @@
 package com.salesianos.socialrides.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.salesianos.socialrides.model.comment.dto.CommentRequest;
+import com.salesianos.socialrides.model.comment.dto.CommentResponse;
 import com.salesianos.socialrides.model.like.dto.LikeResponse;
 import com.salesianos.socialrides.model.page.dto.PageResponse;
 import com.salesianos.socialrides.model.post.dto.CreatePostRequest;
@@ -19,6 +21,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -39,7 +42,6 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-    private final PostRepository postRepository;
 
 
     @Operation(summary = "Creates a new post.")
@@ -74,9 +76,10 @@ public class PostController {
     )
     @PostMapping("/auth/post")
     @JsonView({View.PostView.PostWithEverythingView.class})
-    public ResponseEntity<PostResponse> createPost(@Valid @RequestPart("post") CreatePostRequest post,
-                                                   @RequestPart("file") MultipartFile file,
-                                                   @AuthenticationPrincipal User loggedUser){
+    public ResponseEntity<PostResponse> createPost(
+            @Valid @RequestPart("post") CreatePostRequest post,
+            @RequestPart("file") MultipartFile file,
+            @AuthenticationPrincipal User loggedUser){
 
         PostResponse postResponse = postService.createPost(post, file, loggedUser);
         URI uri = ServletUriComponentsBuilder
@@ -204,8 +207,9 @@ public class PostController {
     })
     @GetMapping("/auth/post")
     @JsonView({View.PostView.PostListView.class})
-    public PageResponse<List<PostResponse>> getAllUserPost(@PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable,
-                                                           @AuthenticationPrincipal User user){
+    public PageResponse<List<PostResponse>> getAllUserPost(
+            @PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable,
+            @AuthenticationPrincipal User user){
         return postService.findAllByUser(pageable, user.getId());
     }
 
@@ -258,10 +262,11 @@ public class PostController {
             ")" +
             ") ? true : false")
     @PutMapping("auth/post/{id}")
-    public ResponseEntity<PostResponse> editPost(@PathVariable Long id,
-                                 @Valid @RequestPart("post") CreatePostRequest editedPost,
-                                 @AuthenticationPrincipal User user,
-                                 @RequestPart("file") MultipartFile file){
+    public ResponseEntity<PostResponse> editPost(
+            @PathVariable Long id,
+            @Valid @RequestPart("post") CreatePostRequest editedPost,
+            @AuthenticationPrincipal User user,
+            @RequestPart("file") MultipartFile file){
         PostResponse post =postService.editPost(id, editedPost, file);
         URI uri = ServletUriComponentsBuilder
                 .fromPath("/post/{id}")
@@ -286,16 +291,18 @@ public class PostController {
                     ") ? true : false")
     //@postRepository.existsById(#id)? @postRepository.findById(#id).get().user.username == authentication.principal.getUsername() : false"
     @DeleteMapping("auth/post/{id}")
-    public ResponseEntity<?> deletePost(@PathVariable Long id,
-                                        @AuthenticationPrincipal User user){
+    public ResponseEntity<?> deletePost(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User user){
         postService.deletePost(id);
         return ResponseEntity.noContent().build();
     }
 
     @JsonView(View.PostView.PostWithEverythingView.class)
     @PutMapping("/auth/post/{id}/like")
-    public ResponseEntity<PostResponse> likePost(@PathVariable Long id,
-                                                 @AuthenticationPrincipal User user){
+    public ResponseEntity<PostResponse> likePost(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User user){
         PostResponse postResponse = postService.likePostInteraction(id, user);
         URI uri = ServletUriComponentsBuilder
                 .fromPath("/post/{id}")
@@ -306,8 +313,33 @@ public class PostController {
 
     @JsonView(View.LikesView.class)
     @GetMapping("/post/{id}/likes")
-    public PageResponse<List<LikeResponse>> getPostLikes(@PathVariable Long id,
-                                                   @PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable){
+    public PageResponse<LikeResponse> getPostLikes(
+            @PathVariable Long id,
+            @PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC)
+            Pageable pageable){
         return postService.findPostLikes(pageable, id);
+    }
+
+    @JsonView(View.CommentsView.class)
+    @GetMapping("/post/{id}/comments")
+    public PageResponse<CommentResponse> getPostComments(
+            @PathVariable Long id,
+            @PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC)
+            Pageable pageable){
+        return postService.findPostComments(pageable, id);
+    }
+
+    @PostMapping("/auth/post/{id}/comment")
+    public ResponseEntity<PageResponse<CommentResponse>> leaveComment(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long idPost,
+            @RequestBody CommentRequest commentRequest){
+
+        postService.createComment(idPost, commentRequest);
+        URI uri = ServletUriComponentsBuilder
+                .fromPath("/post/{id}/comments")
+                .buildAndExpand(idPost)
+                .toUri();
+        return ResponseEntity.created(uri).build();
     }
 }

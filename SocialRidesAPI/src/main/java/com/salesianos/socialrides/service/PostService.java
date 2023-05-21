@@ -5,6 +5,9 @@ import com.salesianos.socialrides.exception.post.NoPostsException;
 import com.salesianos.socialrides.exception.post.NoUserPostsException;
 import com.salesianos.socialrides.exception.post.PostNotFoundException;
 import com.salesianos.socialrides.exception.user.UserNotFoundException;
+import com.salesianos.socialrides.model.comment.Comment;
+import com.salesianos.socialrides.model.comment.dto.CommentRequest;
+import com.salesianos.socialrides.model.comment.dto.CommentResponse;
 import com.salesianos.socialrides.model.like.LikePk;
 import com.salesianos.socialrides.model.like.Likee;
 import com.salesianos.socialrides.model.like.dto.LikeResponse;
@@ -13,6 +16,7 @@ import com.salesianos.socialrides.model.post.Post;
 import com.salesianos.socialrides.model.post.dto.CreatePostRequest;
 import com.salesianos.socialrides.model.post.dto.PostResponse;
 import com.salesianos.socialrides.model.user.User;
+import com.salesianos.socialrides.repository.CommentRepository;
 import com.salesianos.socialrides.repository.LikeRepository;
 import com.salesianos.socialrides.repository.PostRepository;
 import com.salesianos.socialrides.search.spec.GenericSpecificationBuilder;
@@ -39,6 +43,7 @@ public class PostService {
 
     private final StorageService storageService;
     private final LikeRepository likeRepository;
+    private final CommentRepository commentRepository;
 
     public Post findById(Long id){
         return postRepository.findById(id).orElseThrow(() -> new PostNotFoundException(id));
@@ -139,8 +144,19 @@ public class PostService {
     }
 
 
-    public PageResponse<List<LikeResponse>> findPostLikes(Pageable pageable, Long idPost){
-        return new PageResponse(likeRepository.findAllByPost(pageable, idPost));
+    public PageResponse<LikeResponse> findPostLikes(Pageable pageable, Long idPost){
+        Post post = postRepository.findById(idPost).orElseThrow(() -> new PostNotFoundException(idPost));
+        return new PageResponse<>(likeRepository.findAllByPost(pageable, idPost));
+    }
+
+    public PageResponse<CommentResponse> findPostComments(Pageable pageable, Long idPost){
+        Post post = postRepository.findById(idPost).orElseThrow(() -> new PostNotFoundException(idPost));
+        return new PageResponse<>(commentRepository.findAllByPost(pageable, idPost));
+    }
+
+    //TODO
+    public CommentResponse createComment(Long idPost, CommentRequest newComment){
+        return CommentResponse.builder().build();
     }
 
 

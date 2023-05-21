@@ -21,6 +21,7 @@ public class View {
     }
 
     public static interface LikesView{}
+    public static interface CommentsView{}
 
     public static interface PageView{}
 }
