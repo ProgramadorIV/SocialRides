@@ -3,10 +3,7 @@ package com.salesianos.socialrides.model.user;
 import com.salesianos.socialrides.model.like.Likee;
 import com.salesianos.socialrides.model.post.Post;
 import com.salesianos.socialrides.utils.EnumSetAttributeConverter;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Parameter;
@@ -79,12 +76,14 @@ public class User implements UserDetails {
             fetch = FetchType.LAZY,
             orphanRemoval = true)
     @Builder.Default
+    @ToString.Exclude
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "user",
             fetch = FetchType.LAZY,
             orphanRemoval = true)
     @Builder.Default
+    @ToString.Exclude
     private List<Likee> likes = new ArrayList<>();
 
     //**************************

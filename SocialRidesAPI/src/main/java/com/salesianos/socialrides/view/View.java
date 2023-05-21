@@ -20,5 +20,7 @@ public class View {
         public static interface LoggedView{}
     }
 
+    public static interface LikesView{}
+
     public static interface PageView{}
 }

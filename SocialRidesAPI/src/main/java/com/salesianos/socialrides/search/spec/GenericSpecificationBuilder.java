@@ -21,7 +21,7 @@ public class GenericSpecificationBuilder<T>{
     final List<String> classes= List.of(
             Post.class.getSimpleName().toLowerCase(),
             User.class.getSimpleName().toLowerCase(),
-            Likee.class.getSimpleName(),
+            Likee.class.getSimpleName().toLowerCase(),
             Comment.class.getSimpleName().toLowerCase());
 
     public GenericSpecificationBuilder(List<SearchCriteria> params, Class<T> clazz){
@@ -32,9 +32,9 @@ public class GenericSpecificationBuilder<T>{
     public Specification<T> build(){
         List<SearchCriteria> filteredCriteria = params.stream().filter(p -> {
             for(Field field : clazz.getDeclaredFields()){
-                if(p.getKey().equalsIgnoreCase(field.getName()))
-                    if(!classes.contains(p.getKey().toLowerCase()))
-                        return true;
+                return p.getKey().equalsIgnoreCase(field.getName())
+                        ||
+                        !classes.contains(p.getKey().toLowerCase());
             }
             return false;
         }).toList();

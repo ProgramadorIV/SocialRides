@@ -3,10 +3,7 @@ package com.salesianos.socialrides.model.post;
 import com.salesianos.socialrides.model.comment.Comment;
 import com.salesianos.socialrides.model.like.Likee;
 import com.salesianos.socialrides.model.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -22,13 +19,19 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-/*@NamedEntityGraphs(
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "post-with-likes",
+                attributeNodes = {@NamedAttributeNode(value = "likes")}
+        ),
+        @NamedEntityGraph(name = "post-with-comments",
+                attributeNodes = {@NamedAttributeNode(value = "comments")}
+        ),
         @NamedEntityGraph(name = "post-with-likes-and-comments",
-        attributeNodes = {
-                @NamedAttributeNode(value = "user"),
-                @NamedAttributeNode(value = "likes", subgraph = "like-users"),
-                @NamedAttributeNode(value = "comments", subgraph = "comment-users")
-        }, subgraphs = {
+                attributeNodes = {
+                        @NamedAttributeNode(value = "user"),
+                        @NamedAttributeNode(value = "likes", subgraph = "like-users"),
+                        @NamedAttributeNode(value = "comments", subgraph = "comment-users")
+                }, subgraphs = {
                 @NamedSubgraph(name = "like-users", attributeNodes = {
                         @NamedAttributeNode("user")
                 }),
@@ -36,7 +39,7 @@ import java.util.Set;
                         @NamedAttributeNode("user")
                 })
         })
-)*/
+})
 public class Post {
 
     @Id
@@ -61,10 +64,12 @@ public class Post {
 
     @OneToMany(mappedBy = "post", orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
+    @ToString.Exclude
     private Set<Likee> likes = new HashSet<>();
 
     @OneToMany(mappedBy = "post", orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
+    @ToString.Exclude
     private Set<Comment> comments = new HashSet<>();
 
     @Builder.Default

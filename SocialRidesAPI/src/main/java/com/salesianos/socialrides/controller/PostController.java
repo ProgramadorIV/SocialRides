@@ -1,6 +1,7 @@
 package com.salesianos.socialrides.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.salesianos.socialrides.model.like.dto.LikeResponse;
 import com.salesianos.socialrides.model.page.dto.PageResponse;
 import com.salesianos.socialrides.model.post.dto.CreatePostRequest;
 import com.salesianos.socialrides.model.post.dto.PostResponse;
@@ -285,8 +286,28 @@ public class PostController {
                     ") ? true : false")
     //@postRepository.existsById(#id)? @postRepository.findById(#id).get().user.username == authentication.principal.getUsername() : false"
     @DeleteMapping("auth/post/{id}")
-    public ResponseEntity<?> deletePost(@PathVariable Long id, @AuthenticationPrincipal User user){
+    public ResponseEntity<?> deletePost(@PathVariable Long id,
+                                        @AuthenticationPrincipal User user){
         postService.deletePost(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @JsonView(View.PostView.PostWithEverythingView.class)
+    @PutMapping("/auth/post/{id}/like")
+    public ResponseEntity<PostResponse> likePost(@PathVariable Long id,
+                                                 @AuthenticationPrincipal User user){
+        PostResponse postResponse = postService.likePostInteraction(id, user);
+        URI uri = ServletUriComponentsBuilder
+                .fromPath("/post/{id}")
+                .buildAndExpand(postResponse.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(postResponse);
+    }
+
+    @JsonView(View.LikesView.class)
+    @GetMapping("/post/{id}/likes")
+    public PageResponse<List<LikeResponse>> getPostLikes(@PathVariable Long id,
+                                                   @PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable){
+        return postService.findPostLikes(pageable, id);
     }
 }
