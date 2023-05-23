@@ -332,14 +332,57 @@ public class PostController {
     @PostMapping("/auth/post/{id}/comment")
     public ResponseEntity<PageResponse<CommentResponse>> leaveComment(
             @AuthenticationPrincipal User user,
-            @PathVariable Long idPost,
+            @PathVariable Long id,
+            @PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestBody CommentRequest commentRequest){
 
-        postService.createComment(idPost, commentRequest);
+        PageResponse<CommentResponse> pagedComments = postService.createComment(id, commentRequest, user, pageable);
         URI uri = ServletUriComponentsBuilder
                 .fromPath("/post/{id}/comments")
+                .buildAndExpand(id)
+                .toUri();
+        return ResponseEntity.created(uri).body(pagedComments);
+    }
+
+    //TODO - EL PREAUTHORIZE MEHHH
+    @PreAuthorize("(@commentRepository.findById(#idComment).orElse(null) == null" +
+            "||"+
+            "@userRepository.findById(#user.getId()).get().equals(" +
+            "@commentRepository.existsById(#idComment)? " +
+            "@commentRepository.findById(#idComment).get().getUser() : null" +
+            ")" +
+            ") ? true : false")
+    @DeleteMapping("/auth/post/{idPost}/comment/{idComment}")
+    public ResponseEntity<?> deleteComment(@AuthenticationPrincipal User user,
+                                           @PathVariable("idPost") Long idPost,
+                                           @PathVariable("idComment") Long idComment){
+        postService.deleteComment(idPost, idComment);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @PreAuthorize("(@commentRepository.findById(#idComment).orElse(null) == null" +
+            "||"+
+            "@userRepository.findById(#user.getId()).get().equals(" +
+            "@commentRepository.existsById(#idComment)? " +
+            "@commentRepository.findById(#idComment).get().getUser() : null" +
+            ")" +
+            ") ? true : false")
+    @PutMapping("/auth/post/{idPost}/comment/{idComment}")
+    public ResponseEntity<PageResponse<CommentResponse>> editComment(
+            @AuthenticationPrincipal User user,
+            @PathVariable("idPost") Long idPost,
+            @PathVariable("idComment") Long idComment,
+            @RequestBody CommentRequest commentRequest,
+            @PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC)
+            Pageable pageable){
+
+        PageResponse<CommentResponse> pagedComments =
+                postService.editComment(idPost, idComment, commentRequest, pageable);
+        URI uri = ServletUriComponentsBuilder
+                .fromPath("post/{id}/comments")
                 .buildAndExpand(idPost)
                 .toUri();
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(pagedComments);
     }
 }

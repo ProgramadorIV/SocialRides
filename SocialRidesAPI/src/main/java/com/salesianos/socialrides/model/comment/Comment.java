@@ -16,24 +16,29 @@ import java.time.LocalDateTime;
 @Builder
 public class Comment {
 
+    /*
     public Comment(User user, Post post, String body){
         this.user = user;
         this.post = post;
         this.body = body;
         commentPk.setUserId(user.getId());
         commentPk.setPostId(post.getId());
-    }
+    }*/
+    //TODO: CAMBIAR PARA QUE EL ID NO SEA COMPUESTO SINO UN SIMPLE ID
 
-    @EmbeddedId
-    private CommentPk commentPk = new CommentPk();
+    /*@EmbeddedId
+    private CommentPk commentPk = new CommentPk();*/
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
 
     @ManyToOne
-    @MapsId("userId")
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_COMMENT_USER"), columnDefinition = "uuid")
     private User user;
 
     @ManyToOne
-    @MapsId("postId")
     @JoinColumn(name = "post_id", foreignKey = @ForeignKey(name = "FK_COMMENT_POST"))
     private Post post;
 
@@ -57,7 +62,8 @@ public class Comment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
-        return commentPk.equals(comment.commentPk);
+        return id.equals(comment.id);
+        //return commentPk.equals(comment.commentPk);
     }
 
 

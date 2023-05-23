@@ -17,6 +17,9 @@ import java.time.LocalDateTime;
 @Builder
 public class CommentResponse {
 
+    @JsonView({View.CommentsView.class})
+    private Long id;
+
     @JsonView({View.PostView.PostWithEverythingView.class,
             View.CommentsView.class
     })

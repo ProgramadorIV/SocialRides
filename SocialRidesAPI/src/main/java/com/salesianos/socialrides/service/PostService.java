@@ -1,11 +1,13 @@
 package com.salesianos.socialrides.service;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.salesianos.socialrides.exception.comment.CommentNotFoundException;
 import com.salesianos.socialrides.exception.post.NoPostsException;
 import com.salesianos.socialrides.exception.post.NoUserPostsException;
 import com.salesianos.socialrides.exception.post.PostNotFoundException;
 import com.salesianos.socialrides.exception.user.UserNotFoundException;
 import com.salesianos.socialrides.model.comment.Comment;
+import com.salesianos.socialrides.model.comment.CommentPk;
 import com.salesianos.socialrides.model.comment.dto.CommentRequest;
 import com.salesianos.socialrides.model.comment.dto.CommentResponse;
 import com.salesianos.socialrides.model.like.LikePk;
@@ -24,7 +26,9 @@ import com.salesianos.socialrides.search.util.SearchCriteria;
 import com.salesianos.socialrides.search.util.SearchCriteriaExtractor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -128,9 +132,8 @@ public class PostService {
         Post post = postRepository.findById(idPost)
                 .orElseThrow(() -> new PostNotFoundException(idPost));
         LikePk likePk = new LikePk(user.getId(), idPost);
-        Optional<Likee> like = likeRepository.findById(new LikePk(user.getId(), idPost));
 
-        if(like.isPresent()){
+        if(likeRepository.existsById(likePk)){
             likeRepository.delete(likeRepository.findById(likePk).orElseThrow());
         }else{
             Likee newLike = Likee.builder()
@@ -154,9 +157,47 @@ public class PostService {
         return new PageResponse<>(commentRepository.findAllByPost(pageable, idPost));
     }
 
-    //TODO
-    public CommentResponse createComment(Long idPost, CommentRequest newComment){
-        return CommentResponse.builder().build();
+
+    public PageResponse<CommentResponse> createComment(Long idPost, CommentRequest newComment, User user, Pageable pageable){
+        Post post = postRepository.findById(idPost).orElseThrow(()-> new PostNotFoundException(idPost));
+        commentRepository.save(
+                Comment.builder()
+                        .body(newComment.getBody())
+                        .user(user)
+                        .post(post)
+                        .build()
+        );
+        //Pageable pageable = PageRequest.of(1, 10, Sort.by("dateTime").descending());
+        return new PageResponse<>(commentRepository.findAllByPost(pageable, idPost));
+    }
+
+    public void deleteComment(Long idPost, Long idComment){
+
+        Post post = postRepository.findById(idPost)
+                .orElseThrow(()-> new PostNotFoundException(idPost));
+
+        commentRepository.deleteById(
+                commentRepository.findById(idComment)
+                        .orElseThrow(
+                                ()->new CommentNotFoundException(idComment)
+                        ).getId()
+        );
+    }
+
+    //TODO - SI EXISTE UN COMENTARIO DE UN USUARIO EN OTRO POST
+    // E INDICAS ESE IDCOMMENT EN LA URL AUNQUE NO SEA DEL POST
+    // LO BORRA Y ACTUALIZA.
+    public PageResponse<CommentResponse> editComment(
+            Long idPost, Long idComment, CommentRequest commentRequest, Pageable pageable){
+        Post post = postRepository.findById(idPost)
+                .orElseThrow(()-> new PostNotFoundException(idPost));
+
+        Comment comment = commentRepository.findById(idComment)
+                .orElseThrow(()-> new CommentNotFoundException(idComment));
+
+        comment.setBody(commentRequest.getBody());
+        commentRepository.save(comment);
+        return new PageResponse<>(commentRepository.findAllByPost(pageable, idPost));
     }
 
 
