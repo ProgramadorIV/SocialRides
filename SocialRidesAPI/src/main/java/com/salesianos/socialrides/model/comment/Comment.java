@@ -30,7 +30,7 @@ public class Comment {
     private CommentPk commentPk = new CommentPk();*/
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
