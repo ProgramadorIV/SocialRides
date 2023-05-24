@@ -120,13 +120,11 @@ public class PostService {
     }
 
     public void deletePost(Long id){
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new PostNotFoundException(id));
 
-        postRepository.deleteById(
-                postRepository.findById(id)
-                        .orElseThrow(
-                                () -> new PostNotFoundException(id)
-                        ).getId()
-        );
+        postRepository.delete(post);
+        //TODO storageService.deleteFile(post.getImg());
     }
 
     public PostResponse likePostInteraction(Long idPost, User user){
@@ -209,14 +207,4 @@ public class PostService {
 
         throw new NoSuchCommentInPostException(idPost, idComment);
     }
-
-
-    /*public LikeResponse likePost(User user, Long postId){
-
-        user.getLikes().stream().map(l -> {
-            if(l.getPost().getId().equals(postId))
-                return l;
-            return null;
-        }).findAny().orElse();
-    }*/
 }

@@ -100,6 +100,7 @@ public class UserService {
     public void delete(User user){ deleteById(user.getId());}
 
     public void deleteById(UUID id){
+        //TODO - CUANDO SE IMPLEMENTE ACORDARSE DE BORRAR LA IMAGEN
         if(userRepository.existsById(id))
             userRepository.deleteById(id);
     }
