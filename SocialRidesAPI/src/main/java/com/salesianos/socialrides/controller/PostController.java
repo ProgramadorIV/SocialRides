@@ -356,7 +356,7 @@ public class PostController {
     public ResponseEntity<?> deleteComment(@AuthenticationPrincipal User user,
                                            @PathVariable("idPost") Long idPost,
                                            @PathVariable("idComment") Long idComment){
-        postService.deleteComment(idPost, idComment);
+        postService.deleteComment(idPost, idComment, user.getId());
         return ResponseEntity.noContent().build();
     }
 
@@ -373,12 +373,12 @@ public class PostController {
             @AuthenticationPrincipal User user,
             @PathVariable("idPost") Long idPost,
             @PathVariable("idComment") Long idComment,
-            @RequestBody CommentRequest commentRequest,
+            @Valid @RequestBody CommentRequest commentRequest,
             @PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC)
             Pageable pageable){
 
         PageResponse<CommentResponse> pagedComments =
-                postService.editComment(idPost, idComment, commentRequest, pageable);
+                postService.editComment(idPost, idComment, user.getId(), commentRequest, pageable);
         URI uri = ServletUriComponentsBuilder
                 .fromPath("post/{id}/comments")
                 .buildAndExpand(idPost)

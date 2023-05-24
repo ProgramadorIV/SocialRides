@@ -2,6 +2,7 @@ package com.salesianos.socialrides.service;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.salesianos.socialrides.exception.comment.CommentNotFoundException;
+import com.salesianos.socialrides.exception.comment.NoSuchCommentInPostException;
 import com.salesianos.socialrides.exception.post.NoPostsException;
 import com.salesianos.socialrides.exception.post.NoUserPostsException;
 import com.salesianos.socialrides.exception.post.PostNotFoundException;
@@ -171,33 +172,42 @@ public class PostService {
         return new PageResponse<>(commentRepository.findAllByPost(pageable, idPost));
     }
 
-    public void deleteComment(Long idPost, Long idComment){
+    public void deleteComment(Long idPost, Long idComment, UUID idUser){
 
         Post post = postRepository.findById(idPost)
                 .orElseThrow(()-> new PostNotFoundException(idPost));
 
-        commentRepository.deleteById(
-                commentRepository.findById(idComment)
+        Comment comment = commentRepository.findById(idComment)
                         .orElseThrow(
                                 ()->new CommentNotFoundException(idComment)
-                        ).getId()
-        );
+                        );
+        if(commentRepository.existsCommentInPost(idComment, idPost, idUser))
+            commentRepository.delete(comment);
+        else
+            throw new NoSuchCommentInPostException(idPost, idComment);
     }
 
     //TODO - SI EXISTE UN COMENTARIO DE UN USUARIO EN OTRO POST
     // E INDICAS ESE IDCOMMENT EN LA URL AUNQUE NO SEA DEL POST
     // LO BORRA Y ACTUALIZA.
-    public PageResponse<CommentResponse> editComment(
-            Long idPost, Long idComment, CommentRequest commentRequest, Pageable pageable){
+    public PageResponse<CommentResponse> editComment(Long idPost,
+                                                     Long idComment,
+                                                     UUID idUser,
+                                                     CommentRequest commentRequest,
+                                                     Pageable pageable){
         Post post = postRepository.findById(idPost)
                 .orElseThrow(()-> new PostNotFoundException(idPost));
 
         Comment comment = commentRepository.findById(idComment)
                 .orElseThrow(()-> new CommentNotFoundException(idComment));
 
-        comment.setBody(commentRequest.getBody());
-        commentRepository.save(comment);
-        return new PageResponse<>(commentRepository.findAllByPost(pageable, idPost));
+        if(commentRepository.existsCommentInPost(idComment, idPost, idUser)){
+            comment.setBody(commentRequest.getBody());
+            commentRepository.save(comment);
+            return new PageResponse<>(commentRepository.findAllByPost(pageable, idPost));
+        }
+
+        throw new NoSuchCommentInPostException(idPost, idComment);
     }
 
 
