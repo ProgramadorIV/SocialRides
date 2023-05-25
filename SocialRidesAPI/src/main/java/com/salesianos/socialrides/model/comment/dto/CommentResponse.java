@@ -17,14 +17,26 @@ import java.time.LocalDateTime;
 @Builder
 public class CommentResponse {
 
-    @JsonView({View.PostView.PostWithEverythingView.class})
+    @JsonView({View.CommentsView.class})
+    private Long id;
+
+    @JsonView({View.PostView.PostWithEverythingView.class,
+            View.CommentsView.class
+    })
     private String username;
 
-    @JsonFormat(pattern = "dd/MM/yyyy hh:HH:ss")
-    @JsonView({View.PostView.PostWithEverythingView.class})
+    @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss")
+    @JsonView({View.PostView.PostWithEverythingView.class,
+            View.CommentsView.class
+    })
     private LocalDateTime dateTime;
 
-    @JsonView({View.PostView.PostWithEverythingView.class})
+    @JsonView({View.CommentsView.class})
+    private String avatar;
+
+    @JsonView({View.PostView.PostWithEverythingView.class,
+            View.CommentsView.class
+    })
     private String body;
 
     public static CommentResponse of(Comment comment){

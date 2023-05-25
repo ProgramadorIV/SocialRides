@@ -40,22 +40,22 @@ public class Likee {
     @Builder.Default
     private LocalDateTime dateTime = LocalDateTime.now();
 
-    private void addToUser(User u){
+    public void addToUser(User u){
         user = u;
         u.getLikes().add(this);
     }
 
-    private void removeFromUser(User u){
+    public void removeFromUser(User u){
         u.getLikes().remove(this);
         user = null;
     }
 
-    private void addToPost(Post p){
+    public void addToPost(Post p){
         post = p;
         p.getLikes().add(this);
     }
 
-    private void removeFromPost(Post p){
+    public void removeFromPost(Post p){
         p.getLikes().remove(this);
         post = null;
     }

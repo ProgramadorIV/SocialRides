@@ -18,12 +18,20 @@ import java.time.LocalDateTime;
 @Builder
 public class LikeResponse {
 
-    @JsonView({View.PostView.PostWithEverythingView.class})
+    public LikeResponse(String username, String avatar){
+        this.username = username;
+        this.avatar = avatar;
+    }
+
+    @JsonView({View.PostView.PostWithEverythingView.class, View.LikesView.class})
     private String username;
 
-    @JsonFormat(pattern = "dd/MM/yyyy hh:HH:ss")
+    @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss")
     @JsonView({View.PostView.PostWithEverythingView.class})
     private LocalDateTime dateTime;
+
+    @JsonView(View.LikesView.class)
+    private String avatar;
 
     public static LikeResponse of(Likee likee){
         return LikeResponse.builder()
@@ -31,4 +39,8 @@ public class LikeResponse {
                 .username(likee.getUser().getUsername())
                 .build();
     }
+
+
+
+
 }

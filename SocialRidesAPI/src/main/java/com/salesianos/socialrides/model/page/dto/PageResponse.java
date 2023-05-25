@@ -18,22 +18,40 @@ import java.util.List;
 @Builder
 public class PageResponse<T> {
 
-    @JsonView(View.PostView.PostListView.class)
+    @JsonView({View.PostView.PostListView.class,
+            View.LikesView.class,
+            View.CommentsView.class
+    })
     List<T> content;
 
-    @JsonView(View.PostView.PostListView.class)
+    @JsonView({View.PostView.PostListView.class,
+            View.LikesView.class,
+            View.CommentsView.class
+    })
     int currentPage;
 
-    @JsonView(View.PostView.PostListView.class)
+    @JsonView({View.PostView.PostListView.class,
+            View.LikesView.class,
+            View.CommentsView.class
+    })
     int totalPages;
 
-    @JsonView(View.PostView.PostListView.class)
+    @JsonView({View.PostView.PostListView.class,
+            View.LikesView.class,
+            View.CommentsView.class
+    })
     int totalElements;
 
-    @JsonView(View.PostView.PostListView.class)
+    @JsonView({View.PostView.PostListView.class,
+            View.LikesView.class,
+            View.CommentsView.class
+    })
     boolean last;
 
-    @JsonView(View.PostView.PostListView.class)
+    @JsonView({View.PostView.PostListView.class,
+            View.LikesView.class,
+            View.CommentsView.class
+    })
     boolean first;
 
     public PageResponse (Page<T> page){

@@ -32,6 +32,8 @@ public class UserService {
 
     public Optional<User> findById(UUID id){return userRepository.findById(id);}
 
+    public User save(User user){return userRepository.save(user);}
+
     public Optional<User> findByUsername(String username){
         return userRepository.findFirstByUsername(username);
     }
@@ -98,6 +100,7 @@ public class UserService {
     public void delete(User user){ deleteById(user.getId());}
 
     public void deleteById(UUID id){
+        //TODO - CUANDO SE IMPLEMENTE ACORDARSE DE BORRAR LA IMAGEN
         if(userRepository.existsById(id))
             userRepository.deleteById(id);
     }
@@ -123,5 +126,4 @@ public class UserService {
                         .orElseThrow(UserNotFoundException::new)
         );
     }
-
 }
