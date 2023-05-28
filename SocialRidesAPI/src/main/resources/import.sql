@@ -21,3 +21,8 @@ INSERT INTO like_entity(user_id, post_id, date_time) VALUES ('4ae23df7-4194-4941
 INSERT INTO like_entity(user_id, post_id, date_time) VALUES ('4ae23df7-4194-4941-8a9d-1234c37c3d30', 1, CURRENT_TIMESTAMP)
 INSERT INTO like_entity(user_id, post_id, date_time) VALUES ('4ae23df7-4194-4941-8a9d-1234c37c3d30', 3, CURRENT_TIMESTAMP)
 INSERT INTO like_entity(user_id, post_id, date_time) VALUES ('4ae23df7-4194-4941-8a9d-1234c37c3d30', 5, CURRENT_TIMESTAMP)
+INSERT INTO chat_entity(user1_id, user2_id, last_update) VALUES ('4ae23df7-4194-4941-8a9d-0310c37c3d30', '4ae23df7-4194-4941-8a9d-4890c37c3d30', CURRENT_TIMESTAMP)
+INSERT INTO chat_entity(user1_id, user2_id, last_update) VALUES ('4ae23df7-4194-4941-8a9d-0310c37c3d30', '4ae23df7-4194-4941-8a9d-1234c37c3d30', CURRENT_TIMESTAMP)
+INSERT INTO message_entity(owner_id, body, watched, date_time, chat_user1_id, chat_user2_id) VALUES ('4ae23df7-4194-4941-8a9d-0310c37c3d30', 'Hola Maylor tq si esto funciona', false, CURRENT_TIMESTAMP, '4ae23df7-4194-4941-8a9d-0310c37c3d30', '4ae23df7-4194-4941-8a9d-1234c37c3d30')
+
+

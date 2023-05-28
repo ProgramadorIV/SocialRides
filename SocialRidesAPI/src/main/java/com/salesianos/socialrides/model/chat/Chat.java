@@ -26,16 +26,16 @@ public class Chat {
 
     @MapsId("ownerId")
     @ManyToOne
-    @JoinColumn(name = "owner_id", foreignKey = @ForeignKey(name = "FK_CHAT_OWNER"), columnDefinition = "uuid")
+    @JoinColumn(name = "user2_id", foreignKey = @ForeignKey(name = "FK_CHAT_OWNER"), columnDefinition = "uuid")
     private User user2;
 
     @MapsId("receiverId")
     @ManyToOne
-    @JoinColumn(name = "receiver_id", foreignKey = @ForeignKey(name = "FK_CHAT_RECEIVER"), columnDefinition = "uuid")
+    @JoinColumn(name = "user1_id", foreignKey = @ForeignKey(name = "FK_CHAT_RECEIVER"), columnDefinition = "uuid")
     private User user1;
 
     @Builder.Default
-    private LocalDateTime dateTime = LocalDateTime.now();
+    private LocalDateTime lastUpdate = LocalDateTime.now();
 
     @OneToMany(mappedBy = "chat", fetch = FetchType.LAZY)
     @Builder.Default

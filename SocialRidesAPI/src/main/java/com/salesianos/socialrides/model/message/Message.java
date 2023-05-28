@@ -31,7 +31,8 @@ public class Message {
 
     private String body;
 
-    private boolean watched;
+    @Builder.Default
+    private boolean watched = false;
 
     @Builder.Default
     private LocalDateTime dateTime = LocalDateTime.now();

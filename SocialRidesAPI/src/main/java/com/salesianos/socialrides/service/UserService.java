@@ -35,7 +35,7 @@ public class UserService {
     public User save(User user){return userRepository.save(user);}
 
     public Optional<User> findByUsername(String username){
-        return userRepository.findFirstByUsername(username);
+        return userRepository.findFirstByUsernameIgnoreCase(username);
     }
 
     public UserResponse findUserByUsername(String username){
@@ -106,10 +106,10 @@ public class UserService {
     }
 
     public boolean existsByUsername(String username){
-        return userRepository.existsByUsername(username);
+        return userRepository.existsByUsernameIgnoreCase(username);
     }
 
-    public boolean existsByEmail(String email){ return userRepository.existsByEmail(email); }
+    public boolean existsByEmail(String email){ return userRepository.existsByEmailIgnoreCase(email); }
 
     public PageResponse<List<PostResponse>> getLikedPosts(Pageable pageable, UUID userId){
 

@@ -17,9 +17,11 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @EntityGraph(value = "user-with-posts", type = EntityGraph.EntityGraphType.LOAD)
     Optional<User> findFirstByUsername(String username);
 
-    boolean existsByUsername(String username);
+    Optional<User> findFirstByUsernameIgnoreCase(String username);
 
-    boolean existsByEmail(String email);
+    boolean existsByUsernameIgnoreCase(String username);
+
+    boolean existsByEmailIgnoreCase(String email);
 
     @EntityGraph(value = "user-with-posts-and-likes", type = EntityGraph.EntityGraphType.LOAD)
     Optional<User> findById(UUID id);
