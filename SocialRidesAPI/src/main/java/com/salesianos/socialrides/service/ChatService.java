@@ -14,14 +14,13 @@ import com.salesianos.socialrides.repository.ChatRepository;
 import com.salesianos.socialrides.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,16 +35,16 @@ public class ChatService {
 
     public PageResponse<ChatResponse> getMyChats(Pageable pageable, UUID idUser){
 
+        //TODO: CHECKEAR SI LO PUEDO HACER LA CONSULTA CON LOS USERNAME PARA NO TENER QUE MANDAR LOS ID
+        // DE LOS USUARIOS EN LA RESPUESTA CHATRESPONSE
+
         Page<ChatResponse> page = chatRepository.findMyChats(pageable, idUser);
         if(page.isEmpty())
             throw new NoChatsFoundException();
 
         return new PageResponse<>(page.map(chatResponse -> {
-            chatResponse.setLastMessage(
-                    messageRepository.findFirstMessageFromChat(
-                            //PageRequest.of(0, 1, Sort.by("dateTime").descending()),
-                            chatResponse.getId()
-                    ));
+            List<String> messages = messageRepository.findFirstMessageFromChat(chatResponse.getId());
+            chatResponse.setLastMessage(messages.stream().findFirst().orElse(chatResponse.getLastMessage()));
             return chatResponse;
         }));
 
@@ -114,6 +113,19 @@ public class ChatService {
                 messageRepository.findMessagesInChat(pageable, currentUser.getId(), username.toLowerCase())
         );
     }
+
+    public void deleteMessage(Long idMessage, UUID userId, String username){
+
+        messageRepository.findById(idMessage).orElseThrow(() -> new EntityNotFoundException()); // todo
+        User user = userService.findByUsername(username).orElseThrow(()->new UserNotFoundException(username));
+
+        if(messageRepository.userOwnsMessage(userId, user.getId(), idMessage))
+            messageRepository.deleteById(idMessage);
+        //TODO else{
+        //  throw new NotOwnMessageException(user.getUsername(), idMessage);
+        // } UNAUTHORIZED EXCEPTION!!!!!
+    }
+
 
 
 }

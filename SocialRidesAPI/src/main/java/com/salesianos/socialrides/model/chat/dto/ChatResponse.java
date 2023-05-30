@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 public class ChatResponse {
 
+    //TODO MIRAR LO DE CHATPK
     public ChatResponse(ChatPk id,
                         String avatar,
                         String username,

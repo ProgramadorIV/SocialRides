@@ -12,18 +12,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface MessageRepository extends JpaRepository<Message, Long>, JpaSpecificationExecutor<Message> {
-
-    @Query("""
+    @Query(value = """
             SELECT m.body
             FROM Message m
-            WHERE m.chat.id = :idChat AND ROWNUM = 1
+            WHERE m.chat.id = :idChat
             ORDER BY m.dateTime DESC
             """)
-    String findFirstMessageFromChat(@Param("idChat") ChatPk chatPk);
-    //TODO: NO ME TRAE EL ULTIMO SI AÑADO MÁS MENSAJES
+    List<String> findFirstMessageFromChat(@Param("idChat") ChatPk idChat);
 
     @Query("""
             SELECT DISTINCT new com.salesianos.socialrides.model.message.dto.MessageResponse(
@@ -48,4 +47,18 @@ public interface MessageRepository extends JpaRepository<Message, Long>, JpaSpec
             UPDATE Message m SET m.watched = true WHERE m.id = :id
             """)
     void watchMessage(Long id);
+
+    @Query("""
+            SELECT COUNT(m)>0
+            FROM Message m LEFT JOIN FETCH Chat c ON c.id = m.chat.id
+            WHERE m.owner.id = :userId
+                AND m.id = :messageId
+                AND ((c.user1.id = :userId AND c.user2.id = :otherUserId)
+                OR
+                (c.user2.id = :userId AND c.user1.id = :otherUserId))
+            """)
+    boolean userOwnsMessage(
+            @Param("userId") UUID userId,
+            @Param("otherUserId")UUID otherUserId,
+            @Param("messageId") Long messageId);
 }

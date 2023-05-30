@@ -8,7 +8,6 @@ import com.salesianos.socialrides.model.user.User;
 import com.salesianos.socialrides.service.ChatService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -17,7 +16,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.persistence.OrderBy;
 import javax.validation.Valid;
 import java.net.URI;
 
@@ -60,6 +58,14 @@ public class ChatController {
             Pageable pageable){
         return chatService.getMessagesInChat(pageable, username, user.getId());
 
+    }
+    @DeleteMapping("/auth/chats/{username}/message/{idMessage}")
+    public ResponseEntity<?> deleteMessage(
+            @AuthenticationPrincipal User user,
+            @PathVariable("idMessage") Long idMessage,
+            @PathVariable("username") String username){
+        chatService.deleteMessage(idMessage, user.getId(), username);
+        return ResponseEntity.noContent().build();
     }
 
 }
