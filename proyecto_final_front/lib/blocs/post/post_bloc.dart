@@ -68,7 +68,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
             status: PostStatus.success,
             posts: List.of(state.posts)..addAll(posts.content!),
             hasReachedMax: posts.last,
-            page: posts.number
+            page: posts.currentPage
             ),
         );
     } catch (_) {
@@ -102,7 +102,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
             status: PostStatus.success,
             posts: List.of(state.posts)..addAll(posts.content!),
             hasReachedMax: posts.last,
-            page: posts.number
+            page: posts.currentPage
             ),
         );
     } catch (_) {

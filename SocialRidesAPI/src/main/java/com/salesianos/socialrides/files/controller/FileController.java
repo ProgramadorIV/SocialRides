@@ -1,4 +1,4 @@
-/*package com.salesianos.socialrides.files.controller;
+package com.salesianos.socialrides.files.controller;
 
 import com.salesianos.socialrides.model.file.dto.FileResponse;
 import com.salesianos.socialrides.service.StorageService;
@@ -74,4 +74,4 @@ public class FileController {
                 .body(resource);
     }
 
-}*/
+}

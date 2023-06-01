@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:proyecto_final_front/config/locator.dart';

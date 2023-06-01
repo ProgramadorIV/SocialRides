@@ -10,10 +10,8 @@ class PostResponse {
   late final bool last;
   late final int totalPages;
   late final int totalElements;
-  late final int size;
   late final bool first;
-  late final int numberOfElements;
-  late final int number;
+  late final int currentPage;
 
   PostResponse();
 
