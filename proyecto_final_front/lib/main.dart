@@ -43,8 +43,8 @@ class MyApp extends StatelessWidget {
   static Route route() {
     print("Enrutando al login");
     return MaterialPageRoute<void>(builder: (context) {
-      var authBloc = BlocProvider.of<AuthenticationBloc>(context);
-      authBloc..add(SessionExpiredEvent());
+      // var authBloc = BlocProvider.of<AuthenticationBloc>(context);
+      // authBloc..add(SessionExpiredEvent());
       return _instance;
     });
     /*return MaterialPageRoute<void>(builder: (context) {
