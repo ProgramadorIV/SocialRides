@@ -1,8 +1,8 @@
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:proyecto_final_front/model/post.dart';
+import 'package:proyecto_final_front/model/post/post.dart';
 
-part 'post_response.g.dart';
+part '../post_response.g.dart';
 
 @JsonSerializable()
 class PostResponse {

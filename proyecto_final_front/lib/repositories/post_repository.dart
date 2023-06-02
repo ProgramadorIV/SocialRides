@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:proyecto_final_front/config/locator.dart';
 import 'package:proyecto_final_front/model/models.dart';
+import 'package:proyecto_final_front/model/post/publish_post_request.dart';
 import 'package:proyecto_final_front/rest/rest.dart';
 
 @singleton
@@ -25,5 +26,17 @@ class PostRepository {
     String url = "/post/${id}";
 
     return PostDetails.fromJson(jsonDecode(await _client.get(url)));
+  }
+
+  Future<PostResponse> getPostFromUser(int page) async {
+    String url = "/auth/post?page=${page}";
+
+    return PostResponse.fromJson(jsonDecode(await _authenticatedClient.get(url)));
+  }
+
+  Future<PostResponse> publishPost(int page, PostRequest postRequest) async {
+    String url = "/auth/post?page=${page}";
+
+    return PostResponse.fromJson(jsonDecode(await _authenticatedClient.post(url, postRequest)));
   }
 }
