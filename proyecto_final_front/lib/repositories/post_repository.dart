@@ -17,7 +17,7 @@ class PostRepository {
   }
 
   Future<PostResponse> fetchPostPage(int page) async {
-    String url = "/post/?page=${page}";
+    String url = "/post/?page=${page}"; //TODO: Posible inclusión de los parametros search.
 
     return PostResponse.fromJson(jsonDecode(await _client.get(url)));
   }
@@ -34,9 +34,24 @@ class PostRepository {
     return PostResponse.fromJson(jsonDecode(await _authenticatedClient.get(url)));
   }
 
-  Future<PostResponse> publishPost(int page, PostRequest postRequest) async {
-    String url = "/auth/post?page=${page}";
+  Future<PostDetails> publishPost(PostRequest postRequest) async {
+    String url = "/auth/post";
 
-    return PostResponse.fromJson(jsonDecode(await _authenticatedClient.post(url, postRequest)));
+    return PostDetails.fromJson(jsonDecode(await _authenticatedClient.post(url, postRequest)));
   }
+
+  Future<PostDetails> editPost(PostRequest editPostRequest, int idPost) async {
+    String url = "/auth/post/${idPost}";
+
+    return PostDetails.fromJson(jsonDecode(await _authenticatedClient.put(url, editPostRequest)));
+  }
+
+  Future<void> deletePost(int idPost) async{
+    String url = "/auth/post/${idPost}";
+
+    await _authenticatedClient.delete(url);
+  }
+
+
+  
 }

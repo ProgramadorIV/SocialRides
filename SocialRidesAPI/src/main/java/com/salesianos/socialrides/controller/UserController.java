@@ -57,7 +57,7 @@ public class UserController {
     @JsonView(View.UserView.CreatedView.class)
     @PostMapping("/auth/register")
     public ResponseEntity<UserResponse> createUserWithUserRole(@Valid @RequestPart("user") CreateUserRequest newUser,
-                                                               @RequestPart("file")MultipartFile file){
+                                                               @RequestPart(value = "file", required = false)MultipartFile file){
 
         UserResponse user = UserResponse.fromUser(userService.createUserWithUserRole(newUser, file));
         URI uri = ServletUriComponentsBuilder
@@ -70,7 +70,7 @@ public class UserController {
     @JsonView(View.UserView.CreatedView.class)
     @PostMapping("/auth/register/admin")
     public ResponseEntity<UserResponse> createUserWithAdminRole(@Valid @RequestPart("user") CreateUserRequest newUser,
-                                                                @RequestPart("file")MultipartFile file){
+                                                                @RequestPart(value = "file", required = false)MultipartFile file){
 
         UserResponse user = UserResponse.fromUser(userService.createUserWithAdminRole(newUser, file));
         URI uri = ServletUriComponentsBuilder

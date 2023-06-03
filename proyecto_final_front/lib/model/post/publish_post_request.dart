@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part '../publish_post_request.g.dart';
+part 'publish_post_request.g.dart';
 
 @JsonSerializable()
-class PostRequest extends Equatable {
+class PostRequest{
   late final String title;
   late final String description;
   late final String location;
@@ -14,12 +14,9 @@ class PostRequest extends Equatable {
     this.description = description;
     this.location = location;
   }
-  
-  @override
-  // TODO: implement props
-  List<Object?> get props => [title, description, location];
 
-  factory PostRequest.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
-  Map<String, dynamic> toJson() => _$PostToJson(this);
+  factory PostRequest.fromJson(Map<String, dynamic> json) => _$PostRequestFromJson(json);
+  Map<String, dynamic> toJson() => _$PostRequestToJson(this);
+
 
 }
