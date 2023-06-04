@@ -27,7 +27,6 @@ class Comment extends Equatable{
   
   Comment();
   @override
-  // TODO: implement props
   List<Object?> get props => [username, dateTime, body];
 
   factory Comment.fromJson(Map<String, dynamic> json) => _$CommentFromJson(json);
