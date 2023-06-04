@@ -2,6 +2,8 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:proyecto_final_front/config/locator.dart';
 import 'package:proyecto_final_front/model/models.dart';
+import 'package:proyecto_final_front/model/user/change_password_request.dart';
+import 'package:proyecto_final_front/model/user/user_details.dart';
 import 'package:proyecto_final_front/repositories/repositories.dart';
 
 @singleton
@@ -15,5 +17,9 @@ class UserService {
 
   Future<PostResponse> getLikedPosts(int page) async {
     return _userRepository.fectchFavoritePosts(page);
+  }
+
+  Future<UserDetails> changePassword(ChangePasswordRequest request) async {
+    return _userRepository.changePassword(request);
   }
 }

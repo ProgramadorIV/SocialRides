@@ -5,8 +5,10 @@ import 'dart:convert';
 import 'package:proyecto_final_front/config/locator.dart';
 import 'package:proyecto_final_front/model/login.dart';
 import 'package:proyecto_final_front/model/models.dart';
-import 'package:proyecto_final_front/model/user.dart';
+import 'package:proyecto_final_front/model/user/change_password_request.dart';
+import 'package:proyecto_final_front/model/user/user.dart';
 import 'package:injectable/injectable.dart';
+import 'package:proyecto_final_front/model/user/user_details.dart';
 
 import 'package:proyecto_final_front/rest/rest.dart';
 
@@ -31,6 +33,12 @@ class UserRepository {
     String url = "/auth/user/like";
 
     return PostResponse.fromJson(jsonDecode(await _authenticatedClient.get(url)));
+  }
+
+  Future<UserDetails> changePassword(ChangePasswordRequest request) async {
+    String url = "/auth/user/changePassword";
+
+    return UserDetails.fromJson(jsonDecode(await _authenticatedClient.post(url, request)));
   }
 
 
