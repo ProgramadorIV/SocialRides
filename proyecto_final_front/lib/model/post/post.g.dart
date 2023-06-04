@@ -48,23 +48,3 @@ Map<String, dynamic> _$PostDetailsToJson(PostDetails instance) =>
       'likes': instance.likes,
       'comments': instance.comments,
     };
-
-Like _$LikeFromJson(Map<String, dynamic> json) => Like()
-  ..username = json['username'] as String
-  ..dateTime = json['dateTime'] as String;
-
-Map<String, dynamic> _$LikeToJson(Like instance) => <String, dynamic>{
-      'username': instance.username,
-      'dateTime': instance.dateTime,
-    };
-
-Comment _$CommentFromJson(Map<String, dynamic> json) => Comment()
-  ..username = json['username'] as String
-  ..dateTime = json['dateTime'] as String
-  ..body = json['body'] as String;
-
-Map<String, dynamic> _$CommentToJson(Comment instance) => <String, dynamic>{
-      'username': instance.username,
-      'dateTime': instance.dateTime,
-      'body': instance.body,
-    };

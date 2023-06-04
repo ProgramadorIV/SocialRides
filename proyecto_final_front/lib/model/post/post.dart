@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:proyecto_final_front/model/Comment/comment_response.dart';
+import 'package:proyecto_final_front/model/Like/like_response.dart';
 
 part 'post.g.dart';
 
@@ -60,33 +62,4 @@ class PostDetails extends Equatable{
 
   factory PostDetails.fromJson(Map<String, dynamic> json) => _$PostDetailsFromJson(json);
   Map<String, dynamic> toJson() => _$PostDetailsToJson(this);
-}
-
-@JsonSerializable()
-class Like extends Equatable{
-  late final String username;
-  late final String dateTime;
-  
-  Like();
-  @override
-  // TODO: implement props
-  List<Object?> get props => [username, dateTime];
-
-  factory Like.fromJson(Map<String, dynamic> json) => _$LikeFromJson(json);
-  Map<String, dynamic> toJson() => _$LikeToJson(this);
-}
-
-@JsonSerializable()
-class Comment extends Equatable{
-  late final String username;
-  late final String dateTime;
-  late final String body;
-  
-  Comment();
-  @override
-  // TODO: implement props
-  List<Object?> get props => [username, dateTime, body];
-
-  factory Comment.fromJson(Map<String, dynamic> json) => _$CommentFromJson(json);
-  Map<String, dynamic> toJson() => _$CommentToJson(this);
 }

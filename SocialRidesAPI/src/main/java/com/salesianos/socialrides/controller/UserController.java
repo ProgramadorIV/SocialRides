@@ -224,7 +224,7 @@ public class UserController {
     @JsonView({View.UserView.DetailsView.class})
     @PutMapping("/auth/user/edit")
     public UserResponse editUser(@Valid @RequestPart("user") EditUserRequest editUserRequest,
-                                 @RequestPart("file") MultipartFile file,
+                                 @RequestPart(value = "file", required = false) MultipartFile file,
                                  @AuthenticationPrincipal User loggedUser){
         return userService.edit(editUserRequest, file, loggedUser);
     }
