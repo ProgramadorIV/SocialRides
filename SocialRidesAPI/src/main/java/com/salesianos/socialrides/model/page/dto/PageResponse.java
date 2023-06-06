@@ -20,37 +20,43 @@ public class PageResponse<T> {
 
     @JsonView({View.PostView.PostListView.class,
             View.LikesView.class,
-            View.CommentsView.class
+            View.CommentsView.class,
+            View.UserView.ListView.class
     })
     List<T> content;
 
     @JsonView({View.PostView.PostListView.class,
             View.LikesView.class,
-            View.CommentsView.class
+            View.CommentsView.class,
+            View.UserView.ListView.class
     })
     int currentPage;
 
     @JsonView({View.PostView.PostListView.class,
             View.LikesView.class,
-            View.CommentsView.class
+            View.CommentsView.class,
+            View.UserView.ListView.class
     })
     int totalPages;
 
     @JsonView({View.PostView.PostListView.class,
             View.LikesView.class,
-            View.CommentsView.class
+            View.CommentsView.class,
+            View.UserView.ListView.class
     })
     int totalElements;
 
     @JsonView({View.PostView.PostListView.class,
             View.LikesView.class,
-            View.CommentsView.class
+            View.CommentsView.class,
+            View.UserView.ListView.class
     })
     boolean last;
 
     @JsonView({View.PostView.PostListView.class,
             View.LikesView.class,
-            View.CommentsView.class
+            View.CommentsView.class,
+            View.UserView.ListView.class
     })
     boolean first;
 

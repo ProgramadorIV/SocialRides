@@ -89,8 +89,8 @@ public class PostService {
         return PostResponse.of(post);
     }
 
-    public PageResponse<List<PostResponse>> findAll(String searchQuery, Pageable pageable){
-        List<PostResponse> posts = List.of();
+    public PageResponse<PostResponse> findAll(String searchQuery, Pageable pageable){
+
         List<SearchCriteria> searchCriteria = SearchCriteriaExtractor.extractSearchCriteriaList(searchQuery);
         Specification<Post> spec = (new GenericSpecificationBuilder<Post>(searchCriteria, Post.class)).build();
         if(spec != null){
@@ -98,9 +98,9 @@ public class PostService {
             if (page.isEmpty())
                 throw new NoPostsException();
 
-            return new PageResponse(page);
+            return new PageResponse<>(page);
         }
-        return new PageResponse(postRepository.findAll(pageable).map(PostResponse::fromUser));
+        return new PageResponse<>(postRepository.findAll(pageable).map(PostResponse::fromUser));
     }
 
     public PostResponse editPost(Long id, CreatePostRequest editedPost, MultipartFile file){

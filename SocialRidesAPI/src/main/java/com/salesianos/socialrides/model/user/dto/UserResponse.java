@@ -21,6 +21,12 @@ import java.util.List;
 @SuperBuilder
 public class UserResponse {
 
+    public UserResponse(String avatar, String username, String name, String surname){
+        this.avatar = avatar;
+        this.username = username;
+        this.name = name;
+        this.surname = surname;
+    }
     @JsonView({View.UserView.ProfileView.class,
             View.UserView.CreatedView.class,
             View.UserView.LoggedView.class
@@ -29,28 +35,32 @@ public class UserResponse {
 
     @JsonView({View.UserView.ProfileView.class,
             View.UserView.CreatedView.class,
-            View.UserView.LoggedView.class
+            View.UserView.LoggedView.class,
+            View.UserView.ListView.class
     })
     protected String username;
 
     @JsonView({View.UserView.ProfileView.class,
             View.UserView.CreatedView.class,
             View.UserView.DetailsView.class,
-            View.UserView.LoggedView.class
+            View.UserView.LoggedView.class,
+            View.UserView.ListView.class
     })
     protected String avatar;
 
     @JsonView({View.UserView.ProfileView.class,
             View.UserView.DetailsView.class,
             View.UserView.CreatedView.class,
-            View.UserView.LoggedView.class
+            View.UserView.LoggedView.class,
+            View.UserView.ListView.class
     })
     protected String name;
 
     @JsonView({View.UserView.ProfileView.class,
             View.UserView.DetailsView.class,
             View.UserView.CreatedView.class,
-            View.UserView.LoggedView.class
+            View.UserView.LoggedView.class,
+            View.UserView.ListView.class
     })
     protected String surname;
 
@@ -81,6 +91,15 @@ public class UserResponse {
 
     @JsonView(View.UserView.LoggedView.class)
     protected String refreshToken;
+
+    public static UserResponse toList(User user){
+        return UserResponse.builder()
+                .username(user.getUsername())
+                .avatar(user.getAvatar())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .build();
+    }
 
     public static UserResponse toLoggedUser(User user, String token, String refreshToken){
         return UserResponse.builder()

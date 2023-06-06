@@ -18,6 +18,9 @@ public class View {
         public static interface CreatedView{}
 
         public static interface LoggedView{}
+
+        public static interface ListView {
+        }
     }
 
     public static interface LikesView{}

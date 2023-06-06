@@ -1,8 +1,10 @@
 package com.salesianos.socialrides.service;
 
+import com.salesianos.socialrides.exception.post.NoPostsException;
 import com.salesianos.socialrides.exception.user.NotLikedPostsException;
 import com.salesianos.socialrides.exception.user.UserNotFoundException;
 import com.salesianos.socialrides.model.page.dto.PageResponse;
+import com.salesianos.socialrides.model.post.Post;
 import com.salesianos.socialrides.model.post.dto.PostResponse;
 import com.salesianos.socialrides.model.user.User;
 import com.salesianos.socialrides.model.user.UserRole;
@@ -10,8 +12,13 @@ import com.salesianos.socialrides.model.user.dto.CreateUserRequest;
 import com.salesianos.socialrides.model.user.dto.EditUserRequest;
 import com.salesianos.socialrides.model.user.dto.UserResponse;
 import com.salesianos.socialrides.repository.UserRepository;
+import com.salesianos.socialrides.search.spec.GenericSpecificationBuilder;
+import com.salesianos.socialrides.search.util.SearchCriteria;
+import com.salesianos.socialrides.search.util.SearchCriteriaExtractor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -125,5 +132,15 @@ public class UserService {
                 userRepository.findById(id)
                         .orElseThrow(UserNotFoundException::new)
         );
+    }
+
+    public PageResponse<UserResponse> searchUsers(Pageable pageable, String searchQuery){
+        List<SearchCriteria> searchCriteria = SearchCriteriaExtractor.extractSearchCriteriaList(searchQuery);
+        Specification<User> spec = (new GenericSpecificationBuilder<User>(searchCriteria, User.class)).build();
+        if(spec != null){
+            Page<UserResponse> page = userRepository.findAll(spec, pageable).map(UserResponse::toList);
+            return new PageResponse<>(page);
+        }
+        return new PageResponse<>(userRepository.findAll(pageable).map(UserResponse::toList));
     }
 }

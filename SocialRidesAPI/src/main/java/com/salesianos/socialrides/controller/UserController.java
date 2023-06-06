@@ -313,4 +313,12 @@ public class UserController {
     public UserResponse getProfile(@AuthenticationPrincipal User user){
         return userService.getProfile(user.getId());
     }
+
+    @JsonView({View.UserView.ListView.class})
+    @GetMapping("/filter/user")
+    public PageResponse<UserResponse> getUsers(
+            @RequestParam(value = "$", defaultValue = "")String searchQuery,
+            @PageableDefault(size = 20, sort = "username", direction = Sort.Direction.DESC) Pageable pageable){
+        return userService.searchUsers(pageable, searchQuery);
+    }
 }

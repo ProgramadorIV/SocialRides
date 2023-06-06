@@ -126,7 +126,7 @@ public class PostController {
     })
     @GetMapping("/post")
     @JsonView({View.PostView.PostListView.class})
-    public PageResponse<List<PostResponse>> getAllPosts(
+    public PageResponse<PostResponse> getAllPosts(
             @RequestParam(value = "$", defaultValue = "")String searchQuery,
             @PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC)Pageable pageable){
         return postService.findAll(searchQuery, pageable);
