@@ -1,8 +1,10 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:proyecto_final_front/config/locator.dart';
 import 'package:proyecto_final_front/pages/home_page.dart';
+import 'package:proyecto_final_front/pages/register_page.dart';
 import '../blocs/blocs.dart';
 import '../services/services.dart';
 
@@ -12,6 +14,7 @@ class LoginPage extends StatelessWidget {
     return MaterialApp(
       home: Container(
         decoration: BoxDecoration(
+          color: Color.fromARGB(255, 30, 30, 30),
           image: DecorationImage(
             image: NetworkImage('https://i.pinimg.com/originals/d1/3f/8a/d13f8a89424496e99d6dfc57809c153c.jpg'),
             repeat: ImageRepeat.repeat
@@ -52,8 +55,8 @@ class LoginPage extends StatelessWidget {
                     ));
                   }
                   if(state is AuthenticationAuthenticated){
-                    Navigator.of(context).pop();
-                    /*Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(user: state.user)));*/
+                    // Navigator.of(context).pop();
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(user: state.user)));
                   }
                   // return splash screen
                   return Center(
@@ -126,18 +129,23 @@ class __SignInFormState extends State<_SignInForm> {
             );
           }
           return Container(
+            decoration: BoxDecoration(
+              color: Color.fromARGB(239, 255, 255, 255), 
+              borderRadius: BorderRadius.circular(10),
+            ),
             padding: EdgeInsets.only(right: 20, left: 20),
-            color: Colors.white,
-            height: MediaQuery.of(context).size.height/1.5,
-            width: MediaQuery.of(context).size.width/1.7,
+            height: MediaQuery.of(context).size.height/1.75,
+            width: MediaQuery.of(context).size.width/1.5,
             child : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 20 ,bottom: 20),
+                  padding: EdgeInsets.only(bottom: 30),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 20),
+                        padding: EdgeInsets.only(top: 10),
                         child: Image(
                           image: NetworkImage("https://logomakercdn.truic.com/ux-flow/industry/skate-shop-meta.png"),
                           height: MediaQuery.of(context).size.width < 1200 ? 
@@ -197,13 +205,30 @@ class __SignInFormState extends State<_SignInForm> {
                           height: 16,
                         ),
                         //RaisedButton(
-                        ElevatedButton(  
+                        ElevatedButton(
                           //color: Theme.of(context).primaryColor,
                           //textColor: Colors.white,
                           //padding: const EdgeInsets.all(16),
                           //shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
                           child: Text('LOG IN'),
                           onPressed: state is LoginLoading ? () {} : _onLoginButtonPressed,
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "No account?",
+                              ),
+                              TextSpan(
+                                text: "Click here",
+                                style: TextStyle(
+                                  color: Colors.blue
+                                ),
+                                recognizer: TapGestureRecognizer()..onTap = 
+                                () => Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage(),))
+                              )
+                            ],
+                          ),
                         )
                       ],
                     ),
