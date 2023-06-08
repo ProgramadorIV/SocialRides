@@ -213,6 +213,14 @@ public class PostController {
         return postService.findAllByUser(pageable, user.getId());
     }
 
+    @JsonView(View.PostView.PostListView.class)
+    @GetMapping("/post/user/{username}")
+    public PageResponse<List<PostResponse>> getUserPosts(
+            @PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable,
+            @PathVariable("username") String username){
+        return postService.findPostsByUsername(pageable, username);
+    }
+
 
     @Operation(summary = "Edits the post provided.")
     @ApiResponses(value = {

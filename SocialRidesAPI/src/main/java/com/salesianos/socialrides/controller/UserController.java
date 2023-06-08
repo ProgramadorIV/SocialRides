@@ -102,7 +102,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(UserResponse.toLoggedUser(user, token, refreshToken.getToken()));
     }
 
-    @JsonView(View.UserView.CreatedView.class)
+    @JsonView(View.UserView.DetailsView.class)
     @PutMapping("/auth/user/changePassword")
     public ResponseEntity<UserResponse> changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest,
                                                        @AuthenticationPrincipal User loggedUser) {
@@ -114,7 +114,7 @@ public class UserController {
             if (userService.passwordMatch(loggedUser, changePasswordRequest.getOldPassword())) {
                 Optional<User> modified = userService.editPassword(loggedUser.getId(), changePasswordRequest.getNewPassword());
                 if (modified.isPresent())
-                    return ResponseEntity.ok(UserResponse.fromUser(modified.get()));
+                    return ResponseEntity.ok(UserResponse.toDetails(modified.get()));
             } else {
                 // Lo ideal es que esto se gestionara de forma centralizada
                 // Se puede ver cómo hacerlo en la formación sobre Validación con Spring Boot
@@ -269,7 +269,6 @@ public class UserController {
                                                           @AuthenticationPrincipal User user){
         return userService.getLikedPosts(pageable, user.getId());
     }
-
 
     @Operation(summary = "Returns the profile of the logged user.")
     @ApiResponses(value = {

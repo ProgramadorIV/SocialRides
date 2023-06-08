@@ -27,8 +27,7 @@ public class UserResponse {
         this.name = name;
         this.surname = surname;
     }
-    @JsonView({View.UserView.ProfileView.class,
-            View.UserView.CreatedView.class,
+    @JsonView({View.UserView.CreatedView.class,
             View.UserView.LoggedView.class
     })
     protected String id;
@@ -84,7 +83,10 @@ public class UserResponse {
     protected LocalDateTime createdAt;
 
     @JsonView({View.UserView.ProfileView.class})
-    protected List<PostResponse> posts;
+    protected Integer posts;
+
+    /*@JsonView({View.UserView.ProfileView.class})
+    protected List<PostResponse> posts;*/
 
     @JsonView(View.UserView.LoggedView.class)
     protected String token;
@@ -122,6 +124,7 @@ public class UserResponse {
                 .name(user.getName())
                 .surname(user.getSurname())
                 .birthday(user.getBirthday())
+                .createdAt(user.getCreatedAt())
                 .build();
     }
 
@@ -140,7 +143,6 @@ public class UserResponse {
 
     public static UserResponse of(User user){
         return UserResponse.builder()
-                .id(user.getId().toString())
                 .username(user.getUsername())
                 .avatar(user.getAvatar())
                 .name(user.getName())
@@ -148,12 +150,7 @@ public class UserResponse {
                 .birthday(user.getBirthday())
                 .email(user.getEmail())
                 .createdAt(user.getCreatedAt())
-                .posts(
-                        user.getPosts()
-                                .stream()
-                                .map(PostResponse::fromUser)
-                                .toList()
-                )
+                .posts(user.getPosts().size())
                 .build();
     }
 }

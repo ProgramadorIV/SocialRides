@@ -32,6 +32,8 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
     @EntityGraph(value = "user-with-posts-and-likes", type = EntityGraph.EntityGraphType.LOAD)
     Optional<User> findById(UUID id);
 
+    Optional<User> findByUsername(String username);
+
     @Query("""
             SELECT DISTINCT new com.salesianos.socialrides.model.post.dto.PostResponse(
             p.id, p.title, p.description, p.img, p.location, p.dateTime)

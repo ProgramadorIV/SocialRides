@@ -127,6 +127,12 @@ public class UserService {
         return users;
     }
 
+    public PageResponse<List<PostResponse>> getLikedPostsByUsername(Pageable pageable, String username){
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(()-> new UserNotFoundException(username));
+        return getLikedPosts(pageable, user.getId());
+    }
+
     public UserResponse getProfile(UUID id){
         return UserResponse.of(
                 userRepository.findById(id)
