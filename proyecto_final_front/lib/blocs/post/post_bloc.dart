@@ -62,7 +62,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         );
       }
       //final posts = await _fetchPosts(state.posts.length);
-      final posts = await repo.fetchPostPage(state.page + 1);
+      final posts = await userService.getLikedPosts(state.page + 1);
       emit(
             state.copyWith(
             status: PostStatus.success,
@@ -85,7 +85,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     try {
       if (state.status == PostStatus.initial) {
         //final posts = await _fetchPosts();
-        final posts = await repo.fetchPostPage(0);
+        final posts = await repo.fetchPostPage(0, "");
         return emit(
           state.copyWith(
             status: PostStatus.success,
@@ -96,13 +96,14 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         );
       }
       //final posts = await _fetchPosts(state.posts.length);
-      final posts = await repo.fetchPostPage(state.page + 1);
+      final posts = await repo.fetchPostPage(state.page + 1, state.search);
       emit(
             state.copyWith(
             status: PostStatus.success,
             posts: List.of(state.posts)..addAll(posts.content!),
             hasReachedMax: posts.last,
-            page: posts.currentPage
+            page: posts.currentPage,
+            search: state.search
             ),
         );
     } catch (_) {

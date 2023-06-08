@@ -7,25 +7,29 @@ class PostState extends Equatable {
     this.status = PostStatus.initial,
     this.posts = const <Post>[],
     this.hasReachedMax = false,
-    this.page = 0
+    this.page = 0,
+    this.search = ""
   });
 
   final PostStatus status;
   final List<Post> posts;
   final bool hasReachedMax;
   final int page;
+  final String search;
 
   PostState copyWith({
     PostStatus? status,
     List<Post>? posts,
     bool? hasReachedMax,
     int? page,
+    String? search
   }) {
     return PostState(
       status: status ?? this.status,
       posts: posts ?? this.posts,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-      page: page ?? this.page
+      page: page ?? this.page,
+      search: search ?? this.search
     );
   }
 

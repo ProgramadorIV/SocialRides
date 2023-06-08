@@ -5,13 +5,11 @@ part 'user_details.g.dart';
 @JsonSerializable()
 class UserDetails {
   
-  late final String id;
-  late final String username;
   late final String avatar;
   late final String name;
   late final String surname;
+  late final String birthday;
   late final String email;
-  late final String createdAt;
 
   UserDetails();
 

@@ -19,8 +19,8 @@ class PostRepository {
     _authenticatedClient = GetIt.I.get<RestAuthenticatedClient>();
   }
 
-  Future<PostResponse> fetchPostPage(int page) async {
-    String url = "/post/?page=${page}"; //TODO: Posible inclusión de los parametros search.
+  Future<PostResponse> fetchPostPage(int page, String searchQuery) async {
+    String url = "/post/?page=${page}&\$=${searchQuery}";
 
     return PostResponse.fromJson(jsonDecode(await _client.get(url)));
   }

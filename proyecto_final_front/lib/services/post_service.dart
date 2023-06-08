@@ -15,8 +15,8 @@ class PostService {
     _postRepository = GetIt.I.get<PostRepository>();
   }
 
-  Future<PostResponse> getAllPosts(int page) async{
-    return _postRepository.fetchPostPage(page); //Para hacer search -> "search=" en ()
+  Future<PostResponse> getAllPosts(int page, String searchQuery) async{
+    return _postRepository.fetchPostPage(page, searchQuery);
   }
 
   Future<PostDetails> getDetailsById(int id) async {

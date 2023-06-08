@@ -314,7 +314,7 @@ public class UserController {
     }
 
     @JsonView({View.UserView.ListView.class})
-    @GetMapping("/filter/user")
+    @GetMapping("/user/filter")
     public PageResponse<UserResponse> getUsers(
             @RequestParam(value = "$", defaultValue = "")String searchQuery,
             @PageableDefault(size = 20, sort = "username", direction = Sort.Direction.DESC) Pageable pageable){
