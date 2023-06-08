@@ -24,4 +24,6 @@ public class ChangePasswordRequest {
     @NotEmpty(message = "{changePasswordRequest.verifyNewPassword.notempty}")
     private String verifyNewPassword;
 
+    //todo: si pones un usuario que no eres tu sale not found en vez de contraseña incorrecta
+
 }

@@ -21,36 +21,45 @@ import java.util.List;
 @SuperBuilder
 public class UserResponse {
 
-    @JsonView({View.UserView.ProfileView.class,
-            View.UserView.CreatedView.class,
+    public UserResponse(String avatar, String username, String name, String surname){
+        this.avatar = avatar;
+        this.username = username;
+        this.name = name;
+        this.surname = surname;
+    }
+    @JsonView({View.UserView.CreatedView.class,
             View.UserView.LoggedView.class
     })
     protected String id;
 
     @JsonView({View.UserView.ProfileView.class,
             View.UserView.CreatedView.class,
-            View.UserView.LoggedView.class
+            View.UserView.LoggedView.class,
+            View.UserView.ListView.class
     })
     protected String username;
 
     @JsonView({View.UserView.ProfileView.class,
             View.UserView.CreatedView.class,
             View.UserView.DetailsView.class,
-            View.UserView.LoggedView.class
+            View.UserView.LoggedView.class,
+            View.UserView.ListView.class
     })
     protected String avatar;
 
     @JsonView({View.UserView.ProfileView.class,
             View.UserView.DetailsView.class,
             View.UserView.CreatedView.class,
-            View.UserView.LoggedView.class
+            View.UserView.LoggedView.class,
+            View.UserView.ListView.class
     })
     protected String name;
 
     @JsonView({View.UserView.ProfileView.class,
             View.UserView.DetailsView.class,
             View.UserView.CreatedView.class,
-            View.UserView.LoggedView.class
+            View.UserView.LoggedView.class,
+            View.UserView.ListView.class
     })
     protected String surname;
 
@@ -74,13 +83,25 @@ public class UserResponse {
     protected LocalDateTime createdAt;
 
     @JsonView({View.UserView.ProfileView.class})
-    protected List<PostResponse> posts;
+    protected Integer posts;
+
+    /*@JsonView({View.UserView.ProfileView.class})
+    protected List<PostResponse> posts;*/
 
     @JsonView(View.UserView.LoggedView.class)
     protected String token;
 
     @JsonView(View.UserView.LoggedView.class)
     protected String refreshToken;
+
+    public static UserResponse toList(User user){
+        return UserResponse.builder()
+                .username(user.getUsername())
+                .avatar(user.getAvatar())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .build();
+    }
 
     public static UserResponse toLoggedUser(User user, String token, String refreshToken){
         return UserResponse.builder()
@@ -103,6 +124,7 @@ public class UserResponse {
                 .name(user.getName())
                 .surname(user.getSurname())
                 .birthday(user.getBirthday())
+                .createdAt(user.getCreatedAt())
                 .build();
     }
 
@@ -121,7 +143,6 @@ public class UserResponse {
 
     public static UserResponse of(User user){
         return UserResponse.builder()
-                .id(user.getId().toString())
                 .username(user.getUsername())
                 .avatar(user.getAvatar())
                 .name(user.getName())
@@ -129,12 +150,7 @@ public class UserResponse {
                 .birthday(user.getBirthday())
                 .email(user.getEmail())
                 .createdAt(user.getCreatedAt())
-                .posts(
-                        user.getPosts()
-                                .stream()
-                                .map(PostResponse::fromUser)
-                                .toList()
-                )
+                .posts(user.getPosts().size())
                 .build();
     }
 }

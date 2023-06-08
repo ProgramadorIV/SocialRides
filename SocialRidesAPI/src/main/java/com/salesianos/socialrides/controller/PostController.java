@@ -126,7 +126,7 @@ public class PostController {
     })
     @GetMapping("/post")
     @JsonView({View.PostView.PostListView.class})
-    public PageResponse<List<PostResponse>> getAllPosts(
+    public PageResponse<PostResponse> getAllPosts(
             @RequestParam(value = "$", defaultValue = "")String searchQuery,
             @PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC)Pageable pageable){
         return postService.findAll(searchQuery, pageable);
@@ -211,6 +211,14 @@ public class PostController {
             @PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable,
             @AuthenticationPrincipal User user){
         return postService.findAllByUser(pageable, user.getId());
+    }
+
+    @JsonView(View.PostView.PostListView.class)
+    @GetMapping("/post/user/{username}")
+    public PageResponse<List<PostResponse>> getUserPosts(
+            @PageableDefault(sort = "dateTime", direction = Sort.Direction.DESC) Pageable pageable,
+            @PathVariable("username") String username){
+        return postService.findPostsByUsername(pageable, username);
     }
 
 

@@ -59,12 +59,13 @@ public class PostService {
 
     public PageResponse<List<PostResponse>> findAllByUser(Pageable pageable, UUID id){
 
-        PageResponse<List<PostResponse>> pageResponse = new PageResponse<>(postRepository.findAllByUser(pageable, id));
+        return new PageResponse<>(postRepository.findAllByUser(pageable, id));
+    }
 
-        if(pageResponse.getContent().isEmpty())
-            throw new NoUserPostsException();
-
-        return pageResponse;
+    public PageResponse<List<PostResponse>> findPostsByUsername(Pageable pageable, String username){
+        User user = userService.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
+        return findAllByUser(pageable, user.getId());
     }
 
     public Post findPostWithInteractions(Long id){
@@ -89,8 +90,8 @@ public class PostService {
         return PostResponse.of(post);
     }
 
-    public PageResponse<List<PostResponse>> findAll(String searchQuery, Pageable pageable){
-        List<PostResponse> posts = List.of();
+    public PageResponse<PostResponse> findAll(String searchQuery, Pageable pageable){
+
         List<SearchCriteria> searchCriteria = SearchCriteriaExtractor.extractSearchCriteriaList(searchQuery);
         Specification<Post> spec = (new GenericSpecificationBuilder<Post>(searchCriteria, Post.class)).build();
         if(spec != null){
@@ -98,9 +99,9 @@ public class PostService {
             if (page.isEmpty())
                 throw new NoPostsException();
 
-            return new PageResponse(page);
+            return new PageResponse<>(page);
         }
-        return new PageResponse(postRepository.findAll(pageable).map(PostResponse::fromUser));
+        return new PageResponse<>(postRepository.findAll(pageable).map(PostResponse::fromUser));
     }
 
     public PostResponse editPost(Long id, CreatePostRequest editedPost, MultipartFile file){
