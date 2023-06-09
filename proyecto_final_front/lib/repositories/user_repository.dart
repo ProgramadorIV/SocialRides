@@ -7,6 +7,8 @@ import 'package:proyecto_final_front/model/login.dart';
 import 'package:proyecto_final_front/model/models.dart';
 import 'package:proyecto_final_front/model/user/change_password_request.dart';
 import 'package:proyecto_final_front/model/user/edit_user_request.dart';
+import 'package:proyecto_final_front/model/user/register_response.dart';
+import 'package:proyecto_final_front/model/user/register_user_request.dart';
 import 'package:proyecto_final_front/model/user/user.dart';
 import 'package:injectable/injectable.dart';
 import 'package:proyecto_final_front/model/user/user_details.dart';
@@ -74,6 +76,11 @@ class UserRepository {
     String url = "/auth/post?page=${page}";
 
     return PostResponse.fromJson(jsonDecode(await _authenticatedClient.get(url)));
+  }
+
+  Future<RegisterResponse> registerUser(RegisterUserRequest request) async {
+    String url = "/auth/register";
+    return RegisterResponse.fromJson(jsonDecode(await _client.post(url, request)));
   }
 
 }

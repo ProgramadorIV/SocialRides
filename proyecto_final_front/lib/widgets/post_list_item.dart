@@ -1,5 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:proyecto_final_front/model/models.dart';
+import 'package:proyecto_final_front/pages/register_page.dart';
 import 'package:proyecto_final_front/widgets/default_img.dart';
 import 'package:proyecto_final_front/widgets/post_details.dart';
 

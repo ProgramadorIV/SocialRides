@@ -4,6 +4,8 @@ import 'package:proyecto_final_front/config/locator.dart';
 import 'package:proyecto_final_front/model/models.dart';
 import 'package:proyecto_final_front/model/user/change_password_request.dart';
 import 'package:proyecto_final_front/model/user/edit_user_request.dart';
+import 'package:proyecto_final_front/model/user/register_response.dart';
+import 'package:proyecto_final_front/model/user/register_user_request.dart';
 import 'package:proyecto_final_front/model/user/user_details.dart';
 import 'package:proyecto_final_front/model/user/user_list_response.dart';
 import 'package:proyecto_final_front/model/user/user_profile.dart';
@@ -44,5 +46,9 @@ class UserService {
 
   Future<PostResponse> getLoggedUserPosts(int page) async {
     return _userRepository.getLoggedUserPosts(page);
+  }
+
+  Future<RegisterResponse> registerUser(RegisterUserRequest request) async {
+    return _userRepository.registerUser(request);
   }
 }
