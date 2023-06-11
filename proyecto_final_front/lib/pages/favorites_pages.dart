@@ -14,7 +14,7 @@ class FavoritePage extends StatelessWidget{
     
     return BlocProvider(
       create: (context) => PostBloc()..add(FavoritePostFetched()),
-      child: PostList(),
+      child: Favorites(),
     );
   }
 }
@@ -80,7 +80,7 @@ class _FavoritesState extends State<Favorites>{
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<PostBloc>().add(PostFetched());
+    if (_isBottom) context.read<PostBloc>().add(FavoritePostFetched());
   }
 
   bool get _isBottom {

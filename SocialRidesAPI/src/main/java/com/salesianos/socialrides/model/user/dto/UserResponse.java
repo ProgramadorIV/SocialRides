@@ -97,7 +97,7 @@ public class UserResponse {
     public static UserResponse toList(User user){
         return UserResponse.builder()
                 .username(user.getUsername())
-                .avatar(user.getAvatar())
+                .avatar(user.getAvatar() == null ? "" : user.getAvatar())
                 .name(user.getName())
                 .surname(user.getSurname())
                 .build();
@@ -107,7 +107,7 @@ public class UserResponse {
         return UserResponse.builder()
                 .id(user.getId().toString())
                 .username(user.getUsername())
-                .avatar(user.getAvatar())
+                .avatar(user.getAvatar() == null ? "" : user.getAvatar())
                 .name(user.getName())
                 .surname(user.getSurname())
                 .birthday(user.getBirthday())
@@ -120,7 +120,7 @@ public class UserResponse {
     public static UserResponse toDetails(User user){
         return UserResponse.builder()
                 .email(user.getEmail())
-                .avatar(user.getAvatar())
+                .avatar(user.getAvatar() == null ? "" : user.getAvatar())
                 .name(user.getName())
                 .surname(user.getSurname())
                 .birthday(user.getBirthday())
@@ -133,7 +133,7 @@ public class UserResponse {
         return UserResponse.builder()
                 .id(user.getId().toString())
                 .username(user.getUsername())
-                .avatar(user.getAvatar())
+                .avatar(user.getAvatar() == null ? "" : user.getAvatar())
                 .name(user.getName())
                 .surname(user.getSurname())
                 .email(user.getEmail())
@@ -144,7 +144,7 @@ public class UserResponse {
     public static UserResponse of(User user){
         return UserResponse.builder()
                 .username(user.getUsername())
-                .avatar(user.getAvatar())
+                .avatar(user.getAvatar() == null ? "" : user.getAvatar())
                 .name(user.getName())
                 .surname(user.getSurname())
                 .birthday(user.getBirthday())

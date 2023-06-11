@@ -38,6 +38,10 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       _onFavoritePostFetched,
       transformer: throttleDroppable(throttleDuration),
     );
+    on<UserPostFetched>(
+      _onUserPostFetched,
+      transformer: throttleDroppable(throttleDuration)
+    );
   }
   
   late PostRepository repo;
@@ -109,6 +113,37 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     } catch (_) {
       emit(state.copyWith(status: PostStatus.failure));
     }
+  }
+
+  Future<void> _onUserPostFetched(UserPostFetched event, Emitter<PostState> emit) async {
+    if (state.hasReachedMax) return;
+    try {
+      if (state.status == PostStatus.initial) {
+        final posts = await userService.getLoggedUserPosts(0);
+        return emit(
+          state.copyWith(
+            status: PostStatus.success,
+            posts: posts.content,
+            hasReachedMax: posts.last,
+            page: 0
+          ),
+        );
+      }
+      final posts = await userService.getLoggedUserPosts(state.page + 1);
+      emit(
+            state.copyWith(
+            status: PostStatus.success,
+            posts: List.of(state.posts)..addAll(posts.content!),
+            hasReachedMax: posts.last,
+            page: posts.currentPage
+            ),
+        );
+    } catch (_) {
+      emit(state.copyWith(status: PostStatus.failure));
+    }
+
+
+
   }
   
 }

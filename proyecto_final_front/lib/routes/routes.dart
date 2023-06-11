@@ -33,7 +33,7 @@ List<Widget> listViews = [
       BlocBuilder<AuthenticationBloc, AuthenticationState>
       (builder: (context, state){
         if(state is AuthenticationAuthenticated){
-          return Profile();
+          return Profilepage();
         }
         if(state is AuthenticationNotAuthenticated){
           return LoginPage();

@@ -14,7 +14,6 @@ class PostDetailState extends Equatable {
   final PostDetails? postDetails;
 
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 
 }

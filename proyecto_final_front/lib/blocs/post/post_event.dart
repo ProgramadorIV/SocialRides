@@ -8,3 +8,5 @@ abstract class PostEvent extends Equatable {
 class PostFetched extends PostEvent {}
 
 class FavoritePostFetched extends PostEvent {}
+
+class UserPostFetched extends PostEvent {}
