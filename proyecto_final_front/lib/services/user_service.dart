@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:proyecto_final_front/config/locator.dart';
 import 'package:proyecto_final_front/model/models.dart';
 import 'package:proyecto_final_front/model/user/change_password_request.dart';
 import 'package:proyecto_final_front/model/user/edit_user_request.dart';
+import 'package:proyecto_final_front/model/user/exists_user.dart';
 import 'package:proyecto_final_front/model/user/register_response.dart';
 import 'package:proyecto_final_front/model/user/register_user_request.dart';
 import 'package:proyecto_final_front/model/user/user_details.dart';
@@ -48,7 +51,11 @@ class UserService {
     return _userRepository.getLoggedUserPosts(page);
   }
 
-  Future<RegisterResponse> registerUser(RegisterUserRequest request) async {
-    return _userRepository.registerUser(request);
+  Future<dynamic> registerUser(RegisterUserRequest request, File file) async {
+    return _userRepository.registerUser(request, file);
+  }
+
+  Future<ExistsUserResponse> existsByUsername(String username) async {
+    return _userRepository.existsByUsername(username);
   }
 }

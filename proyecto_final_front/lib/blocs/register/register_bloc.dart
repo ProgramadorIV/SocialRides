@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
@@ -22,7 +24,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   _onRegisterButtonPressed(RegisterButtonPressed event, Emitter<RegisterState> emit) async{
     emit(RegisterLoading());
     try{
-      final user = await _userService.registerUser(event.request);
+      final user = await _userService.registerUser(event.request, new File(''));
       emit(RegisterSucess(user: user));
     } on CustomException catch (e) {
       emit(RegisterFailure(error: e.message));

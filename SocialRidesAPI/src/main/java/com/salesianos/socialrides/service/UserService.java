@@ -10,6 +10,7 @@ import com.salesianos.socialrides.model.user.User;
 import com.salesianos.socialrides.model.user.UserRole;
 import com.salesianos.socialrides.model.user.dto.CreateUserRequest;
 import com.salesianos.socialrides.model.user.dto.EditUserRequest;
+import com.salesianos.socialrides.model.user.dto.ExistsUserResponse;
 import com.salesianos.socialrides.model.user.dto.UserResponse;
 import com.salesianos.socialrides.repository.UserRepository;
 import com.salesianos.socialrides.search.spec.GenericSpecificationBuilder;
@@ -114,6 +115,10 @@ public class UserService {
 
     public boolean existsByUsername(String username){
         return userRepository.existsByUsernameIgnoreCase(username);
+    }
+
+    public ExistsUserResponse existsUsername(String username){
+        return ExistsUserResponse.of(existsByUsername(username));
     }
 
     public boolean existsByEmail(String email){ return userRepository.existsByEmailIgnoreCase(email); }

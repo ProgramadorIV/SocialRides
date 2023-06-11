@@ -11,6 +11,7 @@ import 'package:get_it/get_it.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:injectable/injectable.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 
 class ApiConstants {
@@ -86,6 +87,29 @@ class RestClient {
     }on Exception catch(ex){
       throw ex;
     }
+  }
+
+  Future<http.Response> postRegister(String url, File file, dynamic body) async {
+    Map<String, String> headers = Map();
+    var bytes = await file.readAsBytes();
+    Uri uri = Uri.parse(ApiConstants.baseUrl + url);
+
+    var request = new http.MultipartRequest('POST', uri);
+    var finalFile = await http.MultipartFile.fromBytes(
+      'file',
+      bytes,
+      filename: file.path.split('/').last,
+      contentType: MediaType('image', file.path.split('.').last),
+    );
+    
+    request.files.add(finalFile);
+    headers.addAll({
+      'Content-Type': 'multipart/form-data',
+      'Authorization': 'NoAuth'
+    });
+    request.headers.addAll(headers);
+    final response = await _httpClient!.send(request);
+    return response;
   }
 
   Future<dynamic> post(String url, dynamic body) async {

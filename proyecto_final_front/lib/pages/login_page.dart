@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:proyecto_final_front/config/locator.dart';
 import 'package:proyecto_final_front/pages/home_page.dart';
@@ -165,7 +166,7 @@ class __SignInFormState extends State<_SignInForm> {
                   autovalidateMode: _autoValidate ? AutovalidateMode.always : AutovalidateMode.disabled,
                   child: SingleChildScrollView(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         TextFormField(
                           decoration: InputDecoration(
@@ -210,24 +211,30 @@ class __SignInFormState extends State<_SignInForm> {
                           //textColor: Colors.white,
                           //padding: const EdgeInsets.all(16),
                           //shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
+                          style: ButtonStyle(
+                            padding: MaterialStatePropertyAll(EdgeInsets.symmetric( vertical: 10, horizontal: MediaQuery.of(context).size.width/10))
+                          ),
                           child: Text('LOG IN'),
                           onPressed: state is LoginLoading ? () {} : _onLoginButtonPressed,
                         ),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "No account?",
-                              ),
-                              TextSpan(
-                                text: "Click here",
-                                style: TextStyle(
-                                  color: Colors.blue
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "No account?",
                                 ),
-                                recognizer: TapGestureRecognizer()..onTap = 
-                                () => Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage(),))
-                              )
-                            ],
+                                TextSpan(
+                                  text: " Click here",
+                                  style: TextStyle(
+                                    color: Colors.blue
+                                  ),
+                                  recognizer: TapGestureRecognizer()..onTap = 
+                                  () => Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage(),))
+                                )
+                              ],
+                            ),
                           ),
                         )
                       ],

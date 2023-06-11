@@ -1,12 +1,14 @@
 
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:proyecto_final_front/config/locator.dart';
 import 'package:proyecto_final_front/model/login.dart';
 import 'package:proyecto_final_front/model/models.dart';
 import 'package:proyecto_final_front/model/user/change_password_request.dart';
 import 'package:proyecto_final_front/model/user/edit_user_request.dart';
+import 'package:proyecto_final_front/model/user/exists_user.dart';
 import 'package:proyecto_final_front/model/user/register_response.dart';
 import 'package:proyecto_final_front/model/user/register_user_request.dart';
 import 'package:proyecto_final_front/model/user/user.dart';
@@ -78,9 +80,16 @@ class UserRepository {
     return PostResponse.fromJson(jsonDecode(await _authenticatedClient.get(url)));
   }
 
-  Future<RegisterResponse> registerUser(RegisterUserRequest request) async {
+  Future<dynamic> registerUser(RegisterUserRequest request, File file) async {
     String url = "/auth/register";
-    return RegisterResponse.fromJson(jsonDecode(await _client.post(url, request)));
+    dynamic response = await _client.postRegister(url, file, request);
+    return response;
+  }
+
+  Future<ExistsUserResponse> existsByUsername(String username) async {
+    String url = "/user/exists/${username}";
+
+    return await ExistsUserResponse.fromJson(jsonDecode(await _client.get(url)));
   }
 
 }

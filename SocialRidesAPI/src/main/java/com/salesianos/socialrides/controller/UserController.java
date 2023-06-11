@@ -320,4 +320,9 @@ public class UserController {
             @PageableDefault(size = 20, sort = "username", direction = Sort.Direction.DESC) Pageable pageable){
         return userService.searchUsers(pageable, searchQuery);
     }
+
+    @GetMapping("/user/exists/{username}")
+    public ExistsUserResponse existsUsername(@PathVariable("username") String username){
+        return userService.existsUsername(username);
+    }
 }

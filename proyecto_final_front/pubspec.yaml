@@ -23,16 +23,20 @@ environment:
 
 dependencies:
   bloc: ^8.1.1
+  intl: ^0.17.0
   bloc_concurrency: ^0.2.0
   flutter_bloc: ^8.1.1
   equatable: ^2.0.5
   http: ^0.13.5
+  http_parser: ^4.0.0
   get_it: ^7.2.0
   injectable: ^2.1.0
   http_interceptor: ^1.0.1
   shared_preferences: ^2.0.17
   json_annotation: ^4.8.0
-  stream_transform: ^2.1.0 
+  stream_transform: ^2.1.0
+  flutter_cupertino_datetime_picker: ^3.0.0
+  flutter_form_bloc: ^0.30.1
 
   flutter:
     sdk: flutter
