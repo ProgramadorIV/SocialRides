@@ -37,6 +37,7 @@ dependencies:
   stream_transform: ^2.1.0
   flutter_cupertino_datetime_picker: ^3.0.0
   flutter_form_bloc: ^0.30.1
+  file_picker: ^5.2.6
 
   flutter:
     sdk: flutter

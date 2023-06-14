@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proyecto_final_front/blocs/bloc/profile_bloc.dart';
@@ -42,7 +44,7 @@ class ProfileData extends StatelessWidget {
                 child: Text('Failed to fetch user profile data.'),
               );
             case ProfileStatus.sucess:
-              return _profileData(state);
+              return _profileData(state, context);
             case ProfileStatus.initial:
               return const Center(
                 child: CircularProgressIndicator(),
@@ -53,35 +55,74 @@ class ProfileData extends StatelessWidget {
     );
   }
 
-  _profileData(ProfileState state) {
+  _profileData(ProfileState state, BuildContext context) {
     final UserProfile user = state.user ?? new UserProfile();
-    return Column(
-      children: [
-        Row(
-          children: [
-            CircleAvatar(
-              radius: 25,
-              child: Image.network(
-                "http://localhost:8080/download/" + user.avatar,
-                errorBuilder: (context, error, stackTrace) => DefaultImg(),
-                fit: BoxFit.cover,
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: CircleAvatar(
+                  backgroundImage: Image.network(
+                    user.avatar != ''
+                        ? "http://localhost:8080/download/" + user.avatar
+                        : 'https://cdn-icons-png.flaticon.com/512/456/456212.png',
+                    errorBuilder: (context, error, stackTrace) => DefaultImg(),
+                    fit: BoxFit.cover,
+                  ).image,
+                  backgroundColor: Colors.grey.shade300,
+                  radius: 25,
+                ),
               ),
-            )
-          ],
-        ),
-      ],
+              Container(
+                padding: EdgeInsets.only(top: 10),
+                width: MediaQuery.of(context).size.width / 1.75,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      user.name + ' ' + user.surname,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      '@' + user.username,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width / 10,
+                child: IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed:
+                      () {}, //=> Navigator.push(context, MaterialPageRoute(builder: (context) => EditUserPage())), //TODO:
+                ),
+              )
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Container(
+              width: MediaQuery.of(context).size.width / 1.2,
+              //TODO: COMPLETAR DATOS DEL USUARIO
+            ),
+          )
+        ],
+      ),
     );
   }
 }
-
-// class ProfileDataWidget extends StatelessWidget {
-//   const ProfileDataWidget({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-
-//   }
-// }
 
 class ProfileList extends StatelessWidget {
   const ProfileList({super.key});
@@ -155,7 +196,7 @@ class _ProfilePostListState extends State<ProfilePostList> {
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<PostBloc>().add(PostFetched());
+    if (_isBottom) context.read<PostBloc>().add(UserPostFetched());
   }
 
   bool get _isBottom {

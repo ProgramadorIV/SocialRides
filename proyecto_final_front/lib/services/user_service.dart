@@ -16,10 +16,9 @@ import 'package:proyecto_final_front/repositories/repositories.dart';
 
 @singleton
 class UserService {
-  
   late UserRepository _userRepository;
 
-  UserService(){
+  UserService() {
     _userRepository = GetIt.I.get<UserRepository>();
   }
 
