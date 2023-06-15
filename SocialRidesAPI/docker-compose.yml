@@ -21,4 +21,4 @@ services:
     depends_on:
       - db
     ports:
-      - "2109:1998"
+      - "2109:80"
