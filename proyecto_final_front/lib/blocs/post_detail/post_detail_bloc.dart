@@ -12,7 +12,6 @@ part 'post_detail_state.dart';
 
 const throttleDuration = Duration(milliseconds: 100);
 
-
 EventTransformer<E> throttleDroppable<E>(Duration duration) {
   return (events, mapper) {
     return droppable<E>().call(events.throttle(duration), mapper);
@@ -22,19 +21,18 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 class PostDetailBloc extends Bloc<PostDetailEvent, PostDetailState> {
   PostDetailBloc() : super(PostDetailState()) {
     postService = GetIt.I.get<PostService>();
-    on<PostDetailFetched>(
-      _onPostDetailFetched
-    );
+    on<PostDetailFetched>(_onPostDetailFetched);
   }
 
   late final PostService postService;
 
-  Future<void> _onPostDetailFetched(PostDetailFetched event, Emitter<PostDetailState> emit) async{
-    
-    try{
+  Future<void> _onPostDetailFetched(
+      PostDetailFetched event, Emitter<PostDetailState> emit) async {
+    try {
       final postDetails = await postService.getDetailsById(event.id);
-      return emit(PostDetailState( postDetails: postDetails, status: PostDetailStatus.success));
-    }catch(_){
+      return emit(PostDetailState(
+          postDetails: postDetails, status: PostDetailStatus.success));
+    } catch (_) {
       emit(PostDetailState(status: PostDetailStatus.failure));
     }
   }

@@ -99,7 +99,8 @@ class RestClient {
     var bodyJson = http.MultipartFile.fromString('user', jsonEncode(body),
         contentType: MediaType('application', 'json'));
     request.files.add(bodyJson);
-    final response = await _httpClient!.send(request);
+    final streamResponse = await _httpClient!.send(request);
+    var response = await http.Response.fromStream(streamResponse);
     return response;
   }
 

@@ -2,10 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:proyecto_final_front/blocs/bloc/profile_bloc.dart';
+import 'package:proyecto_final_front/blocs/blocs.dart';
 import 'package:proyecto_final_front/blocs/post/post_bloc.dart';
 import 'package:proyecto_final_front/model/user/user_profile.dart';
 import 'package:proyecto_final_front/pages/post_list_page.dart';
+import 'package:proyecto_final_front/rest/rest.dart';
 import 'package:proyecto_final_front/widgets/default_img.dart';
 import 'package:proyecto_final_front/widgets/post_list_item.dart';
 
@@ -69,7 +70,7 @@ class ProfileData extends StatelessWidget {
                 child: CircleAvatar(
                   backgroundImage: Image.network(
                     user.avatar != ''
-                        ? "http://localhost:8080/download/" + user.avatar
+                        ? ApiConstants.baseUrl + "/download/" + user.avatar
                         : 'https://cdn-icons-png.flaticon.com/512/456/456212.png',
                     errorBuilder: (context, error, stackTrace) => DefaultImg(),
                     fit: BoxFit.cover,

@@ -133,7 +133,7 @@ class RegisterFormBloc extends FormBloc<String, String> {
     FieldBlocValidators.required,
   ]);
   final birthday = InputFieldBloc<DateTime, Object>(
-      initialValue: DateTime.now(),
+      initialValue: DateTime.now().subtract(Duration(days: 1)),
       validators: [
         FieldBlocValidators.required,
       ]);
@@ -172,15 +172,6 @@ class RegisterFormBloc extends FormBloc<String, String> {
     return null;
   }
 
-  // static String? _passwordFriendly(TextFieldBloc password){
-
-  //   final RegExp regex = RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,15}$');
-
-  //   if(regex.hasMatch(password.value))
-  //     return null;
-  //   return 'The password must match classic format.';
-  // }
-
   Validator<String> _confirmPassword(
     TextFieldBloc passwordTextFieldBloc,
   ) {
@@ -204,8 +195,7 @@ class RegisterFormBloc extends FormBloc<String, String> {
         email: email.value);
     final UserService userService = GetIt.I.get<UserService>();
     try {
-      final response =
-          await userService.registerUser(request, file.value); //TODO
+      final response = await userService.registerUser(request, file.value);
       if (response.statusCode == 400) {
         ErrorResponse error = ErrorResponse.fromJson(jsonDecode(response.body));
         error.subErrors.forEach((subError) {
@@ -238,15 +228,10 @@ class RegisterFormBloc extends FormBloc<String, String> {
         emitFailure(failureResponse: 'Bad data provided.');
       } else {
         await Future<void>.delayed(const Duration(seconds: 1));
-        emitSuccess(successResponse: jsonEncode(response.body.toJson()));
+        emitSuccess(successResponse: 'Success');
       }
     } catch (e) {
-      if (e is TypeError) {
-        await Future<void>.delayed(const Duration(seconds: 1));
-        emitSuccess();
-      } else {
-        emitFailure(failureResponse: 'Bad data provided.');
-      }
+      emitFailure(failureResponse: 'Error: ' + e.toString());
     }
   }
 }
@@ -273,6 +258,9 @@ class _RegisterFormState extends State<RegisterForm> {
       fileName = result!.files.first.name;
       platformFile = result!.files.first;
       file = new File(platformFile!.path.toString());
+      setState(() {
+        noFile = false;
+      });
     }
   }
 
@@ -299,26 +287,6 @@ class _RegisterFormState extends State<RegisterForm> {
                     'Social Rides',
                     style: GoogleFonts.pacifico(color: Colors.white),
                   ))),
-              // floatingActionButton: Column(
-              //   crossAxisAlignment: CrossAxisAlignment.center,
-              //   mainAxisSize: MainAxisSize.min,
-              //   children: <Widget>[
-              //     // FloatingActionButton.extended(
-              //     //   heroTag: null,
-              //     //   onPressed: formBloc.addErrors,
-              //     //   icon: const Icon(Icons.error_outline),
-              //     //   label: const Text('SHOW ERRORS'),
-              //     // ),
-              //     const SizedBox(height: 12),
-              //     FloatingActionButton.extended(
-              //       heroTag: null,
-              //       onPressed: formBloc.submit,
-              //       icon: const Icon(Icons.send),
-              //       label: const Text('SUBMIT'),
-
-              //     ),
-              //   ],
-              // ),
               body: SafeArea(
                 minimum: const EdgeInsets.all(16),
                 child: FormBlocListener<RegisterFormBloc, String, String>(
@@ -432,45 +400,45 @@ class _RegisterFormState extends State<RegisterForm> {
                                   helperText: 'Choose your birthday',
                                 ),
                               ),
-
-                              ElevatedButton(
-                                onPressed: () {
-                                  _openFile();
-                                  if (file != null) {
-                                    formBloc.file.updateValue(file!);
-                                    setState(() {
-                                      noFile = false;
-                                    });
-                                  }
-                                },
-                                child: Text('Upload file'),
-                              ),
                               if (!noFile)
                                 SizedBox(
                                   height: 100,
                                   width: 100,
                                   child: Image.file(file!),
                                 ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  _openFile();
+                                  if (file != null) {
+                                    formBloc.file.updateValue(file!);
+                                  }
+                                },
+                                child: Text('Upload' +
+                                    (noFile ? '' : ' another') +
+                                    ' file'),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
                               if (!noFile)
                                 SizedBox(
-                                  width: MediaQuery.of(context).size.width / 3,
+                                  width: MediaQuery.of(context).size.width / 4,
                                   child: ElevatedButton(
                                     style: ButtonStyle(
                                         alignment: Alignment.center),
                                     onPressed: () {
                                       formBloc.submit();
                                     },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Icon(Icons.send),
-                                        Text('SUBMIT'),
-                                      ],
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8, horizontal: 0),
+                                      child: Text('REGISTER'),
                                     ),
                                   ),
                                 )
-
                               // RadioButtonGroupFieldBlocBuilder<String>(
                               //   selectFieldBloc: formBloc.select2,
                               //   decoration: const InputDecoration(
@@ -652,9 +620,9 @@ class SuccessScreen extends StatelessWidget {
             const SizedBox(height: 10),
             ElevatedButton.icon(
               onPressed: () => Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => const RegisterPage())),
+                  MaterialPageRoute(builder: (_) => LoginPage())),
               icon: const Icon(Icons.replay),
-              label: const Text('AGAIN'),
+              label: const Text('GO TO LOGIN'),
             ),
           ],
         ),
@@ -662,36 +630,3 @@ class SuccessScreen extends StatelessWidget {
     );
   }
 }
-
-
-// class _RegisterForm extends StatelessWidget {
-//   const _RegisterForm({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       alignment: Alignment.center,
-//       child: BlocProvider<RegisterBloc>(
-//         create: (context) => RegisterBloc(),
-//         child: _RegisterFormWidget(),
-//       ),
-//     );
-//   }
-// }
-
-// class _RegisterFormWidget extends StatefulWidget {
-//   const _RegisterFormWidget({super.key});
-
-//   @override
-//   State<_RegisterFormWidget> createState() => _RegisterFormState();
-// }
-
-// class _RegisterFormState extends State<_RegisterFormWidget> {
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       child: Text('Hola'),
-//     );
-//   }
-// }

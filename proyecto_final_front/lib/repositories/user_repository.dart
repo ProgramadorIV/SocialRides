@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -22,7 +20,6 @@ import 'package:proyecto_final_front/rest/rest.dart';
 @Order(-1)
 @singleton
 class UserRepository {
-
   late RestAuthenticatedClient _authenticatedClient;
   late RestClient _client;
 
@@ -36,18 +33,20 @@ class UserRepository {
 
     var jsonResponse = await _authenticatedClient.get(url);
     return UserResponse.fromJson(jsonDecode(jsonResponse));
-
   }
+
   Future<PostResponse> fectchFavoritePosts(int page) async {
     String url = "/auth/user/like";
 
-    return PostResponse.fromJson(jsonDecode(await _authenticatedClient.get(url)));
+    return PostResponse.fromJson(
+        jsonDecode(await _authenticatedClient.get(url)));
   }
 
   Future<UserDetails> changePassword(ChangePasswordRequest request) async {
     String url = "/auth/user/changePassword";
 
-    return UserDetails.fromJson(jsonDecode(await _authenticatedClient.post(url, request)));
+    return UserDetails.fromJson(
+        jsonDecode(await _authenticatedClient.post(url, request)));
   }
 
   Future<UserProfile> getUserProfile(String username) async {
@@ -59,13 +58,15 @@ class UserRepository {
   Future<UserProfile> getMyProfile() async {
     String url = "/auth/user/profile";
 
-    return UserProfile.fromJson(jsonDecode(await _authenticatedClient.get(url)));
+    return UserProfile.fromJson(
+        jsonDecode(await _authenticatedClient.get(url)));
   }
 
   Future<UserDetails> editUser(EditUserRequest request) async {
     String url = "/auth/user/edit";
 
-    return UserDetails.fromJson(jsonDecode(await _authenticatedClient.put(url, request)));
+    return UserDetails.fromJson(
+        jsonDecode(await _authenticatedClient.put(url, request)));
   }
 
   Future<UserListResponse> filterUsers(int page, String searchQuery) async {
@@ -77,19 +78,19 @@ class UserRepository {
   Future<PostResponse> getLoggedUserPosts(int page) async {
     String url = "/auth/post?page=${page}";
 
-    return PostResponse.fromJson(jsonDecode(await _authenticatedClient.get(url)));
+    return PostResponse.fromJson(
+        jsonDecode(await _authenticatedClient.get(url)));
   }
 
   Future<dynamic> registerUser(RegisterUserRequest request, File file) async {
     String url = "/auth/register";
-    dynamic response = await _client.postRegister(url, file, request);
-    return response;
+    return _client.postRegister(url, file, request);
   }
 
   Future<ExistsUserResponse> existsByUsername(String username) async {
     String url = "/user/exists/${username}";
 
-    return await ExistsUserResponse.fromJson(jsonDecode(await _client.get(url)));
+    return await ExistsUserResponse.fromJson(
+        jsonDecode(await _client.get(url)));
   }
-
 }

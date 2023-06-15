@@ -1,11 +1,11 @@
 part of 'post_detail_bloc.dart';
 
+enum PostDetailStatus { initial, success, failure }
 
-enum PostDetailStatus {initial, success, failure}
+class PostDetailsState {}
 
-class PostDetailState extends Equatable {
-
-  const PostDetailState({
+class PostDetailState extends PostDetailsState {
+  PostDetailState({
     this.status = PostDetailStatus.initial,
     this.postDetails = null,
   });
@@ -15,6 +15,6 @@ class PostDetailState extends Equatable {
 
   @override
   List<Object?> get props => [];
-
 }
 
+class PostActionState extends PostDetailsState {}
