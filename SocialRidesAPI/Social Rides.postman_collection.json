@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "711a5681-1d11-4c60-8abd-19ae1e06070d",
 		"name": "Social Rides",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "23783626"
 	},
 	"item": [
@@ -23,17 +23,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{URL_BASE}}/auth/user/changePassword",
-							"host": [
-								"{{URL_BASE}}"
-							],
-							"path": [
-								"auth",
-								"user",
-								"changePassword"
-							]
-						}
+						"url": "{{URL_BASE}}/auth/user/changePassword"
 					},
 					"response": []
 				},
@@ -64,16 +54,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "{{URL_BASE}}/auth/login",
-							"host": [
-								"{{URL_BASE}}"
-							],
-							"path": [
-								"auth",
-								"login"
-							]
-						}
+						"url": "{{URL_BASE}}/auth/login"
 					},
 					"response": []
 				},
@@ -82,16 +63,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{URL_BASE}}/user/Antonio",
-							"host": [
-								"{{URL_BASE}}"
-							],
-							"path": [
-								"user",
-								"Antonio"
-							]
-						}
+						"url": "{{URL_BASE}}/user/Admin"
 					},
 					"response": []
 				},
@@ -116,17 +88,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{URL_BASE}}/auth/user/edit",
-							"host": [
-								"{{URL_BASE}}"
-							],
-							"path": [
-								"auth",
-								"user",
-								"edit"
-							]
-						}
+						"url": "{{URL_BASE}}/auth/user/edit"
 					},
 					"response": []
 				},
@@ -136,7 +98,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL_BASE}}/auth/user/like",
+							"raw": "{{URL_BASE}}/auth/user/like?page=0",
 							"host": [
 								"{{URL_BASE}}"
 							],
@@ -144,6 +106,12 @@
 								"auth",
 								"user",
 								"like"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								}
 							]
 						}
 					},
@@ -154,17 +122,73 @@
 					"request": {
 						"method": "GET",
 						"header": [],
+						"url": "{{URL_BASE}}/auth/user/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "logOut",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{URL_BASE}}/auth/logOut"
+					},
+					"response": []
+				},
+				{
+					"name": "filter users",
+					"request": {
+						"method": "GET",
+						"header": [],
 						"url": {
-							"raw": "{{URL_BASE}}/auth/user/profile",
+							"raw": "{{URL_BASE}}/user/filter?$=name:a",
+							"host": [
+								"{{URL_BASE}}"
+							],
+							"path": [
+								"user",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "$",
+									"value": "name:a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get logged user posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL_BASE}}/auth/post?page=1",
 							"host": [
 								"{{URL_BASE}}"
 							],
 							"path": [
 								"auth",
-								"user",
-								"profile"
+								"post"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "exists by username",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{URL_BASE}}/user/exists/user"
 					},
 					"response": []
 				}
@@ -194,17 +218,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{URL_BASE}}/auth/register/admin",
-							"host": [
-								"{{URL_BASE}}"
-							],
-							"path": [
-								"auth",
-								"register",
-								"admin"
-							]
-						}
+						"url": "{{URL_BASE}}/auth/register/admin"
 					},
 					"response": []
 				}
@@ -213,6 +227,137 @@
 		{
 			"name": "Post",
 			"item": [
+				{
+					"name": "Interactions",
+					"item": [
+						{
+							"name": "like interaction",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": "{{URL_BASE}}/auth/post/3/like"
+							},
+							"response": []
+						},
+						{
+							"name": "get likes from post",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL_BASE}}/post/3/likes?page=0",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"post",
+										"3",
+										"likes"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get comments from post",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL_BASE}}/post/1/comments",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"post",
+										"1",
+										"comments"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "leave comment",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"body\":\"Muy bonito\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL_BASE}}/auth/post/1/comment",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"auth",
+										"post",
+										"1",
+										"comment"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete comment",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{URL_BASE}}/auth/post/1/comment/6"
+							},
+							"response": []
+						},
+						{
+							"name": "edit comment",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"body\":\"jero tq\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{URL_BASE}}/auth/post/1/comment/6"
+							},
+							"response": []
+						}
+					]
+				},
 				{
 					"name": "create post",
 					"request": {
@@ -234,17 +379,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{URL_BASE}}/auth/post/",
-							"host": [
-								"{{URL_BASE}}"
-							],
-							"path": [
-								"auth",
-								"post",
-								""
-							]
-						}
+						"url": "{{URL_BASE}}/auth/post"
 					},
 					"response": []
 				},
@@ -261,6 +396,33 @@
 							"path": [
 								"post",
 								""
+							],
+							"query": [
+								{
+									"key": "$",
+									"value": "description:l",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "id",
+									"disabled": true
+								},
+								{
+									"key": "$",
+									"value": "title:sk",
+									"disabled": true
+								},
+								{
+									"key": "$user",
+									"value": "u",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -271,16 +433,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "{{URL_BASE}}/post/1",
-							"host": [
-								"{{URL_BASE}}"
-							],
-							"path": [
-								"post",
-								"1"
-							]
-						}
+						"url": "{{URL_BASE}}/post/5"
 					},
 					"response": []
 				},
@@ -305,35 +458,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "{{URL_BASE}}/auth/post/1",
-							"host": [
-								"{{URL_BASE}}"
-							],
-							"path": [
-								"auth",
-								"post",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get posts from user",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{URL_BASE}}/auth/post",
-							"host": [
-								"{{URL_BASE}}"
-							],
-							"path": [
-								"auth",
-								"post"
-							]
-						}
+						"url": "{{URL_BASE}}/auth/post/1"
 					},
 					"response": []
 				},
@@ -342,17 +467,83 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
+						"url": "{{URL_BASE}}/auth/post/1"
+					},
+					"response": []
+				},
+				{
+					"name": "get posts by username",
+					"request": {
+						"method": "GET",
+						"header": [],
 						"url": {
-							"raw": "{{URL_BASE}}/auth/post/1",
+							"raw": "{{URL_BASE}}/post/user/admin",
 							"host": [
 								"{{URL_BASE}}"
 							],
 							"path": [
-								"auth",
 								"post",
-								"1"
+								"user",
+								"admin"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0",
+									"disabled": true
+								}
 							]
 						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Chat",
+			"item": [
+				{
+					"name": "get my chats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{URL_BASE}}/auth/chats"
+					},
+					"response": []
+				},
+				{
+					"name": "chat by username",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{URL_BASE}}/auth/chats/engorilao"
+					},
+					"response": []
+				},
+				{
+					"name": "send message",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"body\":\"Adioss\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL_BASE}}/auth/chats/engorilao/sendMessage"
+					},
+					"response": []
+				},
+				{
+					"name": "delete message",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{URL_BASE}}/auth/chats/engorilao/message/1"
 					},
 					"response": []
 				}
@@ -379,16 +570,7 @@
 						}
 					]
 				},
-				"url": {
-					"raw": "{{URL_BASE}}/auth/register",
-					"host": [
-						"{{URL_BASE}}"
-					],
-					"path": [
-						"auth",
-						"register"
-					]
-				}
+				"url": "{{URL_BASE}}/auth/register"
 			},
 			"response": []
 		},
@@ -420,28 +602,16 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{URL_BASE}}/refreshtoken",
-					"host": [
-						"{{URL_BASE}}"
-					],
-					"path": [
-						"refreshtoken"
-					]
-				}
+				"url": "{{URL_BASE}}/refreshtoken"
 			},
 			"response": []
 		}
 	],
 	"auth": {
 		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "{{token}}",
-				"type": "string"
-			}
-		]
+		"bearer": {
+			"token": "{{token}}"
+		}
 	},
 	"event": [
 		{
