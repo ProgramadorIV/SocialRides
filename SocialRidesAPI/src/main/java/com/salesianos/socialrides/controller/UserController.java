@@ -325,4 +325,13 @@ public class UserController {
     public ExistsUserResponse existsUsername(@PathVariable("username") String username){
         return userService.existsUsername(username);
     }
+
+    @JsonView({View.UserView.ListAdminView.class})
+    @GetMapping("/auth/admin/user")
+    public PageResponse<UserResponse> getUsersListAdmin(
+            @RequestParam(value = "$", defaultValue = "") String searchQuery,
+            @PageableDefault(sort = "username", direction = Sort.Direction.DESC) Pageable pageable){
+        return userService.getUsersAdmin(pageable, searchQuery);
+
+    }
 }

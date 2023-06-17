@@ -154,4 +154,16 @@ public class UserService {
         }
         return new PageResponse<>(userRepository.findAll(pageable).map(UserResponse::toList));
     }
+
+    // *********************** ADMIN METHODS *********************************
+
+    public PageResponse<UserResponse> getUsersAdmin(Pageable pageable, String search){
+        List<SearchCriteria> searchCriteria = SearchCriteriaExtractor.extractSearchCriteriaList(search);
+        Specification<User> spec = (new GenericSpecificationBuilder<User>(searchCriteria, User.class)).build();
+        if(spec != null){
+            Page<UserResponse> page = userRepository.findAll(spec, pageable).map(UserResponse::toListAdmin);
+            return new PageResponse<>(page);
+        }
+        return new PageResponse<>(userRepository.findAll(pageable).map(UserResponse::toListAdmin));
+    }
 }

@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NavigationComponent } from './navigation/navigation.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,13 +18,23 @@ import { TableComponent } from './table/table.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-
+import { NavigationComponent } from './components/general/navigation/navigation.component';
+import { HomeComponent } from './components/home/home.component';
+import { UserPanelComponent } from './components/user-panel/user-panel.component';
+import { PostPanelComponent } from './components/post-panel/post-panel.component';
+import { CommentPanelComponent } from './components/comment-panel/comment-panel.component';
+import { StatusPageComponent } from './components/status-page/status-page.component';
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
     DashboardComponent,
-    TableComponent
+    TableComponent,
+    HomeComponent,
+    UserPanelComponent,
+    PostPanelComponent,
+    CommentPanelComponent,
+    StatusPageComponent,
   ],
   imports: [
     BrowserModule,

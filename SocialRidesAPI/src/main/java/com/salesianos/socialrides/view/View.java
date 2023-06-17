@@ -21,6 +21,8 @@ public class View {
 
         public static interface ListView {
         }
+
+        public static interface ListAdminView{}
     }
 
     public static interface LikesView{}

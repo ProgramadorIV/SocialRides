@@ -2,7 +2,8 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
-import { TableDataSource, TableItem } from './table-datasource';
+import { TableDataSource} from './table-datasource';
+import { UserItem } from '../interfaces/users/user-item';
 
 @Component({
   selector: 'app-table',
@@ -12,11 +13,12 @@ import { TableDataSource, TableItem } from './table-datasource';
 export class TableComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<TableItem>;
+  @ViewChild(MatTable) table!: MatTable<UserItem>;
   dataSource: TableDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['avatar', 'id', 'username', 'name', "surname", "birthday", "email", "posts", "enabled", "createdAt"];
+  // displayedColumns = ["id", "name"];
 
   constructor() {
     this.dataSource = new TableDataSource();

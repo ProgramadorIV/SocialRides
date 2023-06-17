@@ -28,14 +28,16 @@ public class UserResponse {
         this.surname = surname;
     }
     @JsonView({View.UserView.CreatedView.class,
-            View.UserView.LoggedView.class
+            View.UserView.LoggedView.class,
+            View.UserView.ListAdminView.class
     })
     protected String id;
 
     @JsonView({View.UserView.ProfileView.class,
             View.UserView.CreatedView.class,
             View.UserView.LoggedView.class,
-            View.UserView.ListView.class
+            View.UserView.ListView.class,
+            View.UserView.ListAdminView.class
     })
     protected String username;
 
@@ -43,7 +45,8 @@ public class UserResponse {
             View.UserView.CreatedView.class,
             View.UserView.DetailsView.class,
             View.UserView.LoggedView.class,
-            View.UserView.ListView.class
+            View.UserView.ListView.class,
+            View.UserView.ListAdminView.class
     })
     protected String avatar;
 
@@ -51,7 +54,8 @@ public class UserResponse {
             View.UserView.DetailsView.class,
             View.UserView.CreatedView.class,
             View.UserView.LoggedView.class,
-            View.UserView.ListView.class
+            View.UserView.ListView.class,
+            View.UserView.ListAdminView.class
     })
     protected String name;
 
@@ -59,30 +63,38 @@ public class UserResponse {
             View.UserView.DetailsView.class,
             View.UserView.CreatedView.class,
             View.UserView.LoggedView.class,
-            View.UserView.ListView.class
+            View.UserView.ListView.class,
+            View.UserView.ListAdminView.class
     })
     protected String surname;
 
     @JsonView({View.UserView.ProfileView.class,
             View.UserView.DetailsView.class,
-            View.UserView.LoggedView.class
+            View.UserView.LoggedView.class,
+            View.UserView.ListAdminView.class
     })
     protected LocalDate birthday;
 
     @JsonView({View.UserView.ProfileView.class,
             View.UserView.DetailsView.class,
             View.UserView.CreatedView.class,
-            View.UserView.LoggedView.class
+            View.UserView.LoggedView.class,
+            View.UserView.ListAdminView.class
     })
     protected String email;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
     @JsonView({View.UserView.ProfileView.class,
             View.UserView.CreatedView.class,
-            View.UserView.LoggedView.class
+            View.UserView.LoggedView.class,
+            View.UserView.ListAdminView.class
     })
     protected LocalDateTime createdAt;
 
-    @JsonView({View.UserView.ProfileView.class})
+    @JsonView({View.UserView.ListAdminView.class})
+    protected boolean enabled;
+
+    @JsonView({View.UserView.ProfileView.class,
+            View.UserView.ListAdminView.class})
     protected Integer posts;
 
     /*@JsonView({View.UserView.ProfileView.class})
@@ -150,6 +162,21 @@ public class UserResponse {
                 .birthday(user.getBirthday())
                 .email(user.getEmail())
                 .createdAt(user.getCreatedAt())
+                .posts(user.getPosts().size())
+                .build();
+    }
+
+    public static UserResponse toListAdmin(User user){
+        return UserResponse.builder()
+                .id(user.getId().toString())
+                .avatar(user.getAvatar() == null ? "" : user.getAvatar())
+                .username(user.getUsername())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .email(user.getEmail())
+                .birthday(user.getBirthday())
+                .createdAt(user.getCreatedAt())
+                .enabled(user.isEnabled())
                 .posts(user.getPosts().size())
                 .build();
     }
