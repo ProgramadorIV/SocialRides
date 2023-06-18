@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.salesianos.socialrides.model.post.dto.PostResponse;
 import com.salesianos.socialrides.model.user.User;
+import com.salesianos.socialrides.model.user.UserRole;
 import com.salesianos.socialrides.security.jwt.refresh.RefreshToken;
 import com.salesianos.socialrides.view.View;
 import lombok.AllArgsConstructor;
@@ -93,6 +94,9 @@ public class UserResponse {
     @JsonView({View.UserView.ListAdminView.class})
     protected boolean enabled;
 
+    @JsonView({View.UserView.LoggedView.class})
+    protected boolean admin;
+
     @JsonView({View.UserView.ProfileView.class,
             View.UserView.ListAdminView.class})
     protected Integer posts;
@@ -127,6 +131,7 @@ public class UserResponse {
                 .createdAt(user.getCreatedAt())
                 .token(token)
                 .refreshToken(token)
+                .admin(user.getRoles().contains(UserRole.ADMIN))
                 .build();
     }
     public static UserResponse toDetails(User user){

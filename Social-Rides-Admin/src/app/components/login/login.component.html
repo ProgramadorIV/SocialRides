@@ -1,7 +1,49 @@
-<div class="container">
-  <div class="form-container">
-    <!-- Elemento para el formulario -->
-    <form (ngSubmit)="login()">
-    </form>
-  </div>
+<div class="container" [@slideIn]>
+  <mat-card class="form-container">
+    <div style="width: fit-content; padding-bottom: 30px;">
+      <img
+        src="../../../assets/Social-rides.png"
+        width="100%"
+        alt="Logo Social Rides"
+      />
+    </div>
+    <mat-card-content>
+      <form
+        class="example-form"
+        #loginform="ngForm"
+        (submit)="login(loginform)"
+      >
+        <!-- <form class="example-form" (submit)="login()"> -->
+
+        <div class="field">
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Username</mat-label>
+            <input
+              matInput
+              placeholder="Username"
+              required
+              name="username"
+              ngModel
+            />
+          </mat-form-field>
+        </div>
+        <div class="field">
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              placeholder="Password"
+              required
+              type="password"
+              name="password"
+              ngModel
+            />
+          </mat-form-field>
+        </div>
+        <div>
+          <button mat-raised-button type="submit" color="primary">Login</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>

@@ -24,6 +24,11 @@ import { UserPanelComponent } from './components/user-panel/user-panel.component
 import { PostPanelComponent } from './components/post-panel/post-panel.component';
 import { CommentPanelComponent } from './components/comment-panel/comment-panel.component';
 import { StatusPageComponent } from './components/status-page/status-page.component';
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { MaterialModule } from 'src/material-module';
+import { FormsModule } from '@angular/forms';
+import { LoginComponent } from './components/login/login.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,11 +40,12 @@ import { StatusPageComponent } from './components/status-page/status-page.compon
     PostPanelComponent,
     CommentPanelComponent,
     StatusPageComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
+    AppRoutingModule,
     LayoutModule,
     MatToolbarModule,
     MatButtonModule,
@@ -51,7 +57,10 @@ import { StatusPageComponent } from './components/status-page/status-page.compon
     MatMenuModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    HttpClientModule,
+    MaterialModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

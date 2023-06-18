@@ -8,12 +8,14 @@ import { RegisterComponent } from './components/register/register.component';
 import { CommentPanelComponent } from './components/comment-panel/comment-panel.component';
 import { PostPanelComponent } from './components/post-panel/post-panel.component';
 import { StatusPageComponent } from './components/status-page/status-page.component';
+import { AuthenticationGuard } from './guards/authentication.guard';
+import { animation } from '@angular/animations';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent},
+  {path: 'register', component: RegisterComponent, canActivate: [AuthenticationGuard]},
   {path: '', pathMatch: 'full', redirectTo: 'login'},
-  {path: '', component: NavigationComponent, children: [
+  {path: '', component: NavigationComponent, canActivate: [AuthenticationGuard], children: [
     {path: 'home', component: HomeComponent},
     {path: 'users', component: UserPanelComponent},
     {path: 'posts', component: PostPanelComponent},
