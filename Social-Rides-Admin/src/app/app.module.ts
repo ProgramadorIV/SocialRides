@@ -29,6 +29,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from 'src/material-module';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,7 +41,8 @@ import { LoginComponent } from './components/login/login.component';
     PostPanelComponent,
     CommentPanelComponent,
     StatusPageComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

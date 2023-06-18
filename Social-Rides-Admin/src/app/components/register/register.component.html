@@ -8,11 +8,19 @@
       />
     </div>
     <mat-card-content>
+      <!-- username: string,
+      password: string,
+      verifyPasswors: string,
+      email: string,
+      name: string,
+      surname: string,
+      birthday: string -->
       <form
         class="example-form"
+        #registerForm="ngForm"
+        (submit)="register(registerForm)"
       >
-      <!-- #loginform="ngForm"
-        (submit)="register(loginform)" -->
+
 
         <div class="field">
           <mat-form-field class="example-full-width" appearance="fill">
