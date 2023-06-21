@@ -8,5 +8,6 @@ export interface UserItem{
   email: string,
   createdAt: string,
   enabled: boolean,
-  posts: number
+  posts: number,
+  admin: boolean
 }

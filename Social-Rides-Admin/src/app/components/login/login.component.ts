@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
           if(this.response.admin){
             localStorage.setItem('token',this.response.token);
             localStorage.setItem('avatar', this.response.avatar);
+            localStorage.setItem('username', this.response.username);
             this.route.navigate(['home']);
 
           }else{

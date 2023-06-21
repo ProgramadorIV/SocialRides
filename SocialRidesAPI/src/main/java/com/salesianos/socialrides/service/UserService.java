@@ -8,10 +8,7 @@ import com.salesianos.socialrides.model.post.Post;
 import com.salesianos.socialrides.model.post.dto.PostResponse;
 import com.salesianos.socialrides.model.user.User;
 import com.salesianos.socialrides.model.user.UserRole;
-import com.salesianos.socialrides.model.user.dto.CreateUserRequest;
-import com.salesianos.socialrides.model.user.dto.EditUserRequest;
-import com.salesianos.socialrides.model.user.dto.ExistsUserResponse;
-import com.salesianos.socialrides.model.user.dto.UserResponse;
+import com.salesianos.socialrides.model.user.dto.*;
 import com.salesianos.socialrides.repository.UserRepository;
 import com.salesianos.socialrides.search.spec.GenericSpecificationBuilder;
 import com.salesianos.socialrides.search.util.SearchCriteria;
@@ -22,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.EnumSet;
@@ -165,5 +163,26 @@ public class UserService {
             return new PageResponse<>(page);
         }
         return new PageResponse<>(userRepository.findAll(pageable).map(UserResponse::toListAdmin));
+    }
+
+    public void banUser(String username){
+        User user = userRepository.findByUsername(username).orElseThrow(()-> new UserNotFoundException(username));
+        user.setEnabled(false);
+        userRepository.save(user);
+    }
+
+    public void unBanUser(String username){
+        User user = userRepository.findByUsername(username).orElseThrow(()-> new UserNotFoundException(username));
+        user.setEnabled(true);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public UserResponse editRole(EditRoleRequest editRole, String username) {
+
+        User u = userRepository.findByUsername(username).orElseThrow(()->new UserNotFoundException(username));
+        User user = userRepository.findById(u.getId()).get();
+        user.setRoles(editRole.getRoles());
+        return UserResponse.toDetails(userRepository.save(user));
     }
 }

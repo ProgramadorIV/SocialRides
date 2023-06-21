@@ -1,0 +1,15 @@
+<h3>Edit User Roles</h3>
+<form [formGroup]="roleForm" (ngSubmit)="saveUser()" style="text-align: center;">
+  <mat-form-field appearance="fill">
+    <mat-label>Role</mat-label>
+    <mat-select formControlName="role">
+      <!-- <mat-option *ngFor="let role of roledata" [value]="role.roleid">
+      {{role.name}}
+    </mat-option> -->
+    </mat-select>
+  </mat-form-field>
+  <div style="margin-top: 50px;">
+    <button mat-raised-button color="primary">Update</button> |
+    <button mat-raised-button mat-dialog-close color="accent">Close</button>
+  </div>
+</form>

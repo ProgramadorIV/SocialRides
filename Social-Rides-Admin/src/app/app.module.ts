@@ -10,11 +10,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './components/home/dashboard/dashboard.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
-import { TableComponent } from './table/table.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -24,29 +23,33 @@ import { UserPanelComponent } from './components/user-panel/user-panel.component
 import { PostPanelComponent } from './components/post-panel/post-panel.component';
 import { CommentPanelComponent } from './components/comment-panel/comment-panel.component';
 import { StatusPageComponent } from './components/status-page/status-page.component';
-import { HttpClientModule } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from 'src/material-module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { TokenInterceptorService } from './services/token-interceptor.service';
+import { EditUserModalComponent } from './components/user-panel/edit-user-modal/edit-user-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
+
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
     DashboardComponent,
-    TableComponent,
     HomeComponent,
     UserPanelComponent,
     PostPanelComponent,
     CommentPanelComponent,
     StatusPageComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    EditUserModalComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     AppRoutingModule,
     LayoutModule,
     MatToolbarModule,
@@ -62,9 +65,17 @@ import { RegisterComponent } from './components/register/register.component';
     MatSortModule,
     HttpClientModule,
     MaterialModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    MatDialogModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

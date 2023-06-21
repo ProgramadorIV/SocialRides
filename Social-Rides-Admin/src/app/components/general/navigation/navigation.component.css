@@ -27,11 +27,9 @@
 }
 .avatar {
   font-size: 24px;
-  margin-left: 16px;
 }
 .avatar-img {
-  width: 32px; /* Adjust the size as needed */
+  width: 32px;
   height: 32px;
   border-radius: 50%;
-  margin-left: 16px;
 }

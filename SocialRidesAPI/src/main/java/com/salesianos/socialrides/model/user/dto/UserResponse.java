@@ -94,7 +94,9 @@ public class UserResponse {
     @JsonView({View.UserView.ListAdminView.class})
     protected boolean enabled;
 
-    @JsonView({View.UserView.LoggedView.class})
+    @JsonView({View.UserView.LoggedView.class,
+            View.UserView.ListAdminView.class
+    })
     protected boolean admin;
 
     @JsonView({View.UserView.ProfileView.class,
@@ -181,8 +183,9 @@ public class UserResponse {
                 .email(user.getEmail())
                 .birthday(user.getBirthday())
                 .createdAt(user.getCreatedAt())
-                .enabled(user.isEnabled())
                 .posts(user.getPosts().size())
+                .enabled(user.isEnabled())
+                .admin(user.getRoles().contains(UserRole.ADMIN))
                 .build();
     }
 }
