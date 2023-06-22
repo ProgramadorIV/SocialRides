@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"oldPassword\": \"Antonio90!\",\r\n    \"newPassword\": \"Jimenez9!\",\r\n    \"verifyNewPassword\": \"Jimenez9!\"\r\n}",
+							"raw": "{\r\n    \"oldPassword\": \"user\",\r\n    \"newPassword\": \"Jimenez9!\",\r\n    \"verifyNewPassword\": \"Jimenez9!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -47,7 +47,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"Admin\",\r\n    \"password\": \"admin\"\r\n}",
+							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -151,6 +151,11 @@
 							],
 							"query": [
 								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
 									"key": "$",
 									"value": "name:a"
 								}
@@ -165,7 +170,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL_BASE}}/auth/post?page=1",
+							"raw": "{{URL_BASE}}/auth/post?page=0",
 							"host": [
 								"{{URL_BASE}}"
 							],
@@ -176,7 +181,7 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "1"
+									"value": "0"
 								}
 							]
 						}
@@ -198,6 +203,112 @@
 			"name": "Admin",
 			"item": [
 				{
+					"name": "User",
+					"item": [
+						{
+							"name": "get users admin view",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL_BASE}}/admin/user?page=0",
+									"host": [
+										"{{URL_BASE}}"
+									],
+									"path": [
+										"admin",
+										"user"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ban user",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": "{{URL_BASE}}/admin/User/ban"
+							},
+							"response": []
+						},
+						{
+							"name": "unban user",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": "{{URL_BASE}}/admin/User/unban"
+							},
+							"response": []
+						},
+						{
+							"name": "edit role by username",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"roles\": [\r\n        \"ADMIN\",\r\n        \"USER\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{URL_BASE}}/admin/edit-role/User"
+							},
+							"response": []
+						},
+						{
+							"name": "get roles",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{URL_BASE}}/admin/Admin/roles"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Post",
+					"item": [
+						{
+							"name": "get posts by admin",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{URL_BASE}}/admin/posts"
+							},
+							"response": []
+						},
+						{
+							"name": "delete post by admin",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "{{URL_BASE}}/admin/post/1"
+							},
+							"response": []
+						},
+						{
+							"name": "get one post by admin",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{URL_BASE}}/admin/post/1"
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Register admin",
 					"request": {
 						"method": "POST",
@@ -214,7 +325,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/Usuario/Pictures/Saved Pictures/sageCalva.webp"
+									"src": "/C:/Users/Usuario/Pictures/Saved Pictures/IMG_20220224_081956.jpg"
 								}
 							]
 						},
@@ -273,20 +384,19 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{URL_BASE}}/post/1/comments",
+									"raw": "{{URL_BASE}}/post/5/comments?page=0",
 									"host": [
 										"{{URL_BASE}}"
 									],
 									"path": [
 										"post",
-										"1",
+										"5",
 										"comments"
 									],
 									"query": [
 										{
 											"key": "page",
-											"value": "0",
-											"disabled": true
+											"value": "0"
 										}
 									]
 								}
@@ -389,7 +499,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL_BASE}}/post/",
+							"raw": "{{URL_BASE}}/post/?$=title:",
 							"host": [
 								"{{URL_BASE}}"
 							],
@@ -399,22 +509,12 @@
 							],
 							"query": [
 								{
-									"key": "$",
-									"value": "description:l",
-									"disabled": true
-								},
-								{
 									"key": "sort",
 									"value": "id",
 									"disabled": true
 								},
 								{
-									"key": "$",
-									"value": "title:sk",
-									"disabled": true
-								},
-								{
-									"key": "$user",
+									"key": "user",
 									"value": "u",
 									"disabled": true
 								},
@@ -422,6 +522,10 @@
 									"key": "page",
 									"value": "0",
 									"disabled": true
+								},
+								{
+									"key": "$",
+									"value": "title:"
 								}
 							]
 						}
@@ -433,7 +537,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{URL_BASE}}/post/5"
+						"url": "{{URL_BASE}}/post/1"
 					},
 					"response": []
 				},
@@ -477,20 +581,19 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{URL_BASE}}/post/user/admin",
+							"raw": "{{URL_BASE}}/post/user/user?page=0",
 							"host": [
 								"{{URL_BASE}}"
 							],
 							"path": [
 								"post",
 								"user",
-								"admin"
+								"user"
 							],
 							"query": [
 								{
 									"key": "page",
-									"value": "0",
-									"disabled": true
+									"value": "0"
 								}
 							]
 						}
@@ -559,7 +662,7 @@
 					"formdata": [
 						{
 							"key": "user",
-							"value": "{\n    \"username\": \"antonio\",\n    \"password\": \"Antonio90!\",\n    \"verifyPassword\": \"Antonio90!\",\n    \"email\": \"antonio2@gmail.com\",\n    \"name\": \"Antonio\",\n    \"surname\": \"Jiménez\",\n    \"birthday\": \"1998-09-21\"\n}",
+							"value": "{\n    \"username\": \"antonio\",\n    \"password\": \"Antonio9!\",\n    \"verifyPassword\": \"Antonio9!\",\n    \"email\": \"antonio2@gmail.com\",\n    \"name\": \"Antonio\",\n    \"surname\": \"Jiménez\",\n    \"birthday\": \"1998-09-21\"\n}",
 							"contentType": "application/vnd.api+json",
 							"type": "text"
 						},
