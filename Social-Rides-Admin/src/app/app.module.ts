@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { DashboardComponent } from './components/home/dashboard/dashboard.component';
+import { DashboardComponent } from './components/home/dashboard.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
@@ -18,7 +18,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { NavigationComponent } from './components/general/navigation/navigation.component';
-import { HomeComponent } from './components/home/home.component';
 import { UserPanelComponent } from './components/user-panel/user-panel.component';
 import { PostPanelComponent } from './components/post-panel/post-panel.component';
 import { CommentPanelComponent } from './components/comment-panel/comment-panel.component';
@@ -38,7 +37,6 @@ import { ViewPostModalComponent } from './components/post-panel/view-post-modal/
     AppComponent,
     NavigationComponent,
     DashboardComponent,
-    HomeComponent,
     UserPanelComponent,
     PostPanelComponent,
     CommentPanelComponent,

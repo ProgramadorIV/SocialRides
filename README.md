@@ -1,5 +1,46 @@
 # ProyectoFinalBack
 
+## Para Luismi y Miguel
+
+- **Observaciones:** En primer lugar, me gustaría destacar que practicamente todo el código de este proyecto es 'ORIGINAL' (teniendo en cuenta que claramente me he basado en ejemplos de internet, profesor, etc... pero nunca copiado o adaptado el código de mis compañeros).
+### Web
+
+- **Login:** Se crea un formulario de login al cual se accederá nada más se runea el proyecto. De hecho no se puede acceder a ningún otro enlace hasta que se introduzcan los datos de un usuario administrador.
+
+- **Panel de usuarios:** En este panel de control se puede administrar los roles de los usuarios ya existentes y banearlos. El mismo usuario que está logeado, como es evidente, no podrá banearse a sí mismo.
+
+- **Panel de posts:** En este panel de control se puede acceder a una vista previa del post y borrarlo si lo estima oportuno.
+
+- **Nav:** Se añade un componente común para todas las paginas(menos login) que dispone de un dropdown que nos dará la opción de hacer logout.
+
+Se entiende que configuraciones como el routing o guards no deben incluirse en las funcionalidades. 
+
+### API
+
+- **UserController:** Todos los siguientes endpoints necesitan autenticación por parte de un administrador
+
+    - **Get users:** Vista de una lista de usuarios para el panel de control de usuarios.
+    - **Ban:** Se añaden dos nuevos endpoints, uno para banear y otro para quitar el baneo.
+    - **Editar Roles:** Endpoint para editar los roles de un usuario
+    - **Ver roles:** Ver los roles que tiene un usuario
+
+- **PostController:** Todos los siguientes endpoints necesitan autenticación por parte de un administrador
+
+    - **Get posts:** Vista de una lista de posts para el panel de control de posts.
+    - **Delete post:** Borrar un post.
+    - **Get One post:** Vista de un post para el panel de control de posts.
+
+- **Otras modificaciones:**
+
+    - **Seguridad:** Se cambia la seguridad para que funcione correctamente, en vez de /auth/admin/** -> /admin/** 
+    - **Dto y Views:** Se modifican o añaden para responder correctamente a las demandas de los endpoints.
+
+## Features
+
+- **API with Spring:** This part of the application is developed using the Spring framework. It provides an Application Programming Interface (API) to access and manage application data. It includes endpoints for CRUD (Create, Read, Update, Delete) operations and is based on technologies like Java and Spring Boot.
+
+- **Administrator with Angular 14:** The administration interface of the application is built with Angular 14. It provides an admin panel and user-friendly interface to manage and visualize application data. It uses Angular components, services, routing, guards and interceptors to provide a secure experience. Link to documentation -> https://github.com/ProgramadorIV/SocialRides/tree/develop-web/Social-Rides-Admin.
+
 ## Social Rides API
 
 The users provided to test this API are:
