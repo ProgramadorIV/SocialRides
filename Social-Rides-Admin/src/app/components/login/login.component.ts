@@ -49,11 +49,11 @@ export class LoginComponent implements OnInit {
             this.route.navigate(['home']);
 
           }else{
-            alertify.error("Bad credentials")
+            alertify.error("Bad credentials");
           }
         },
         error: (_) => {
-          alertify.error("Bad credentials")
+          alertify.error("Bad credentials");
         }
       });
     }

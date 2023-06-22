@@ -35,13 +35,13 @@ export class EditUserModalComponent implements OnInit {
         this.newRoles.push(UserRole.USER);
       this.service.editUser(this.data.user.username, {roles: this.newRoles}).subscribe({
         next: (data) => {
-          alertify.success("Role updated successfully.")
+          alertify.success("Role updated successfully.");
           this.ref.close();
         },
         error: () => {
           alertify.error("Failed try again");
         }
-      });
+      })
     }
   }
 

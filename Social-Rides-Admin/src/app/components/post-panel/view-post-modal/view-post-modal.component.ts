@@ -25,7 +25,7 @@ export class ViewPostModalComponent implements OnInit {
     this.service.getPostById(postId).subscribe((item) => {
       this.post = item;
       if(item==null)
-        alertify.error('Failed to fetch post data.')
+        alertify.error('Failed to fetch post data.');
     });
   }
 

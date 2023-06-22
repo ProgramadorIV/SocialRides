@@ -73,7 +73,7 @@ export class UserPanelComponent implements OnInit {
       this.service.banUser(username).subscribe(()=> {
         this.getUsers(this.currentPage, this.size, '', '');
         alertify.success("User banned successfully");
-      });
+      })
 
     },function(){})
 
@@ -83,7 +83,7 @@ export class UserPanelComponent implements OnInit {
       this.service.unBanUser(username).subscribe(()=> {
         this.getUsers(this.currentPage, this.size, '', '');
         alertify.success("User unbanned successfully");
-      });
+      })
 
     },function(){})
 
