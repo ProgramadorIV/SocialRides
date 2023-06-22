@@ -31,6 +31,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { EditUserModalComponent } from './components/user-panel/edit-user-modal/edit-user-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ViewPostModalComponent } from './components/post-panel/view-post-modal/view-post-modal.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     StatusPageComponent,
     LoginComponent,
     RegisterComponent,
-    EditUserModalComponent
+    EditUserModalComponent,
+    ViewPostModalComponent
   ],
   imports: [
     BrowserModule,

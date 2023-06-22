@@ -65,6 +65,7 @@
     >
       <th mat-header-cell *matHeaderCellDef>Action</th>
       <td mat-cell *matCellDef="let element">
+        <!-- && !element.admin To be included below-->
         <div *ngIf="username != element.username">
           <button mat-raised-button color="primary" (click)="update(element)">
             Edit roles
@@ -87,6 +88,7 @@
             Unban
           </button>
         </div>
+        <!-- <span *ngIf="element.admin && username != element.username">No actions can be performed on admin users</span> -->
         <span *ngIf="username == element.username"
           >Your account <a routerLink="/home">Edit</a></span
         >
@@ -97,9 +99,9 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
   <mat-paginator
-    [length]="50"
-    [pageSize]="25"
-    [pageSizeOptions]="[25, 50]"
+    [length]="totalElements"
+    [pageSize]="50"
+    [pageSizeOptions]="[50, 100]"
     aria-label="Select page"
   >
   </mat-paginator>

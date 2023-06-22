@@ -98,7 +98,7 @@ public class User implements UserDetails {
 
 
     @Convert(converter = EnumSetAttributeConverter.class)
-    private Set<UserRole> roles;
+    private EnumSet<UserRole> roles;
 
     @CreatedDate
     private LocalDateTime createdAt;

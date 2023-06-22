@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from 'src/app/services/user.service';
 import * as alertify from 'alertifyjs';
+import { UserRole } from 'src/app/interfaces/users/request/role-request';
 
 @Component({
   selector: 'app-edit-user-modal',
@@ -15,41 +16,40 @@ export class EditUserModalComponent implements OnInit {
   private ref:MatDialogRef<EditUserModalComponent>) { }
 
   ngOnInit(): void {
-    // this.getRoles();
+    this.getRoles(this.data.user.username);
   }
 
+  newRoles: UserRole[] = [];
   roledata: any;
-  editdata: any;
-  savedata: any;
-
+  roles: any;
   roleForm = new FormGroup({
-    role: new FormControl("", Validators.required),
-  })
+    admin: new FormControl(false),
+    user: new FormControl(false)
+  });
 
-  saveUser(){}
+  saveUser() {
+    if (this.roleForm.valid) {
+      if(this.roleForm.value.admin)
+        this.newRoles.push(UserRole.ADMIN);
+      if(this.roleForm.value.user)
+        this.newRoles.push(UserRole.USER);
+      this.service.editUser(this.data.user.username, {roles: this.newRoles}).subscribe({
+        next: (data) => {
+          alertify.success("Role updated successfully.")
+          this.ref.close();
+        },
+        error: () => {
+          alertify.error("Failed try again");
+        }
+      });
+    }
+  }
 
-  // saveUser() {
-  //   if (this.roleForm.valid) {
-  //     this.service.editUser(this.roleForm.getRawValue()).subscribe(item => {
-  //       this.savedata = item;
-  //       if (this.savedata.result == 'pass') {
-  //         alertify.success("Updated successfully.")
-  //         this.ref.close();
-  //       } else {
-  //         alertify.error("Failed try again");
-  //       }
-  //     });
-  //   }
-  // }
-
-  // getRoles(username: any) {
-  //   this.service.getRoles(username).subscribe(item => {
-  //     this.editdata = item;
-  //     if (this.editdata != null) {
-  //       this.roleForm.setValue({ role: this.editdata.role});
-  //     }
-  //   });
-
-  // }
-
+  getRoles(username: any) {
+    this.service.getRoles(username).subscribe(item => {
+      this.roles = item;
+      if (this.roles != null) {
+        this.roleForm.setValue({ admin: this.roles.roles.includes('ADMIN'), user: this.roles.roles.includes('USER')});
+    }});
+  }
 }

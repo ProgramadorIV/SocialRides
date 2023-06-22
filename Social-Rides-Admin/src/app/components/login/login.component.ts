@@ -7,6 +7,7 @@ import { UserLogRequest } from 'src/app/interfaces/users/request/user-log-reques
 import { UserLogged } from 'src/app/interfaces/users/response/user-logged';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { animate, style, transition, trigger } from '@angular/animations';
+import * as alertify from 'alertifyjs';
 
 @Component({
   selector: 'app-login',
@@ -48,11 +49,11 @@ export class LoginComponent implements OnInit {
             this.route.navigate(['home']);
 
           }else{
-            alert("Bad credentials");
+            alertify.error("Bad credentials");
           }
         },
         error: (_) => {
-          alert("Bad credentials");
+          alertify.error("Bad credentials");
         }
       });
     }

@@ -6,6 +6,10 @@ public class View {
 
         public static interface PostListView{}
 
+        public static interface ListAdminView{}
+
+        public static  interface ItemAdminView {}
+
         public static interface PostWithEverythingView{}
     }
 

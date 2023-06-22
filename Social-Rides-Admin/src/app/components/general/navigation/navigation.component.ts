@@ -34,6 +34,10 @@ export class NavigationComponent implements OnInit{
     this.route.navigate(['login']);
   }
 
+  profile(): void{
+    this.route.navigate(['home']); //TODO EDITAR RUTA
+  }
+
   // ngDoCheck(): void {
   //   const actualRoute = this.route.url;
 

@@ -183,9 +183,6 @@ public class PostService {
             throw new NoSuchCommentInPostException(idPost, idComment);
     }
 
-    //TODO - SI EXISTE UN COMENTARIO DE UN USUARIO EN OTRO POST
-    // E INDICAS ESE IDCOMMENT EN LA URL AUNQUE NO SEA DEL POST
-    // LO BORRA Y ACTUALIZA.
     public PageResponse<CommentResponse> editComment(Long idPost,
                                                      Long idComment,
                                                      UUID idUser,
@@ -204,5 +201,28 @@ public class PostService {
         }
 
         throw new NoSuchCommentInPostException(idPost, idComment);
+    }
+
+    public PageResponse<PostResponse> getPostsByAdmin(Pageable pageable, String query){
+        List<SearchCriteria> searchCriteria = SearchCriteriaExtractor.extractSearchCriteriaList(query);
+        Specification<Post> spec = (new GenericSpecificationBuilder<Post>(searchCriteria, Post.class)).build();
+        if(spec != null){
+            Page<PostResponse> page = postRepository.findAll(spec, pageable).map(PostResponse::toAdminList);
+            return new PageResponse<>(page);
+        }
+        return new PageResponse<>(postRepository.findAll(pageable).map(PostResponse::toAdminList));
+    }
+
+    public void deletePostByAdmin(Long idPost){
+        postRepository.delete(
+                postRepository.findById(idPost).orElseThrow(()-> new PostNotFoundException(idPost))
+        );
+    }
+
+    public PostResponse getPostByAdmin(Long idPost){
+        return PostResponse.toAdminItem(
+                postRepository.findById(idPost)
+                        .orElseThrow(() -> new PostNotFoundException(idPost))
+        );
     }
 }

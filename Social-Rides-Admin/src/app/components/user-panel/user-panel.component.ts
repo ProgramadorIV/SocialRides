@@ -1,5 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { map } from 'rxjs';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { UserItem } from 'src/app/interfaces/users/response/user-item';
 import { MatTableDataSource } from '@angular/material/table';
@@ -24,18 +23,18 @@ export class UserPanelComponent implements OnInit {
   paginatedUsers: UserItem[] = [];
   currentPage = 0;
   totalPages = 0;
-  totalElemets = 0;
+  totalElements = 0;
   last = true;
   first = true;
   username: any;
-  size = 25;
+  size = 50;
   imgBaseUrl: any;
 
   constructor(private service: UserService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.imgBaseUrl = environment.baseUrl;
-    this.getUsers(0, 25, '', '');
+    this.getUsers(0, 50, '', '');
     this.username = localStorage.getItem('username');
   }
 
@@ -46,7 +45,7 @@ export class UserPanelComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.currentPage = item.currentPage;
       this.totalPages = item.totalPages;
-      this.totalElemets = item.totalElements;
+      this.totalElements = item.totalElements;
       this.last = item.last;
       this.first = item.first;
     });
@@ -57,7 +56,7 @@ export class UserPanelComponent implements OnInit {
 
    let popup= this.dialog.open(EditUserModalComponent,{
       width:'400px',
-      height:'300px',
+      height:'200px',
       exitAnimationDuration:'1000ms',
       enterAnimationDuration:'1000ms',
       data:{

@@ -18,20 +18,24 @@ export class UserService {
     // &sort=UserPanelComponent,desc
 
     return this.http.get<PageResponse<UserItem>>(
-      `${environment.baseUrl}/auth/admin/user?page=${page}&size=${size}&\$=${search}&sort=${sort}`
+      `${environment.baseUrl}/admin/user?page=${page}&size=${size}&\$=${search}&sort=${sort}`
     );
   }
 
-  banUser(username: string){
-    return this.http.put(`${environment.baseUrl}/auth/admin/${username}/ban`, {});
+  banUser(username: string): Observable<any>{
+    return this.http.put<any>(`${environment.baseUrl}/admin/${username}/ban`, {});
   }
 
-  unBanUser(username: string){
-    return this.http.put(`${environment.baseUrl}/auth/admin/${username}/unban`, {});
+  unBanUser(username: string): Observable<any>{
+    return this.http.put<any>(`${environment.baseUrl}/admin/${username}/unban`, {});
   }
 
   editUser(username: string, request: RoleRequest){
-    return this.http.put(`${environment.baseUrl}/auth/admin/edit-role/${username}`, request);
+    return this.http.put(`${environment.baseUrl}/admin/edit-role/${username}`, request);
+  }
+
+  getRoles(username: string){
+    return this.http.get(`${environment.baseUrl}/admin/${username}/roles`);
   }
 
 }

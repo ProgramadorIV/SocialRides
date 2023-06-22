@@ -39,6 +39,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "Post", description = "Post endpoints controller")
+@CrossOrigin("*")
 public class PostController {
 
     private final PostService postService;
@@ -392,5 +393,28 @@ public class PostController {
                 .buildAndExpand(idPost)
                 .toUri();
         return ResponseEntity.created(uri).body(pagedComments);
+    }
+
+    //******************** ADMIN *****************************************
+
+    @JsonView(View.PostView.ListAdminView.class)
+    @GetMapping("/admin/posts")
+    public PageResponse<PostResponse> getPostsByAdmin(
+            @RequestParam(value = "$", defaultValue = "")String searchQuery,
+            @PageableDefault( sort = {"dateTime", "id"}, direction = Sort.Direction.DESC)
+            Pageable pageable){
+        return postService.getPostsByAdmin(pageable, searchQuery);
+    }
+
+    @DeleteMapping("/admin/post/{id}")
+    public ResponseEntity<?> deletePostByAdmin(@PathVariable("id") Long idPost){
+        postService.deletePostByAdmin(idPost);
+        return ResponseEntity.noContent().build();
+    }
+
+    @JsonView(View.PostView.ItemAdminView.class)
+    @GetMapping("/admin/post/{id}")
+    public PostResponse getOnePostByAdmin(@PathVariable Long id){
+        return postService.getPostByAdmin(id);
     }
 }

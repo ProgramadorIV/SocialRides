@@ -22,7 +22,8 @@ public class PageResponse<T> {
             View.LikesView.class,
             View.CommentsView.class,
             View.UserView.ListView.class,
-            View.UserView.ListAdminView.class
+            View.UserView.ListAdminView.class,
+            View.PostView.ListAdminView.class
     })
     List<T> content;
 
@@ -30,7 +31,8 @@ public class PageResponse<T> {
             View.LikesView.class,
             View.CommentsView.class,
             View.UserView.ListView.class,
-            View.UserView.ListAdminView.class
+            View.UserView.ListAdminView.class,
+            View.PostView.ListAdminView.class
     })
     int currentPage;
 
@@ -38,7 +40,8 @@ public class PageResponse<T> {
             View.LikesView.class,
             View.CommentsView.class,
             View.UserView.ListView.class,
-            View.UserView.ListAdminView.class
+            View.UserView.ListAdminView.class,
+            View.PostView.ListAdminView.class
     })
     int totalPages;
 
@@ -46,7 +49,8 @@ public class PageResponse<T> {
             View.LikesView.class,
             View.CommentsView.class,
             View.UserView.ListView.class,
-            View.UserView.ListAdminView.class
+            View.UserView.ListAdminView.class,
+            View.PostView.ListAdminView.class
     })
     int totalElements;
 
@@ -54,7 +58,8 @@ public class PageResponse<T> {
             View.LikesView.class,
             View.CommentsView.class,
             View.UserView.ListView.class,
-            View.UserView.ListAdminView.class
+            View.UserView.ListAdminView.class,
+            View.PostView.ListAdminView.class
     })
     boolean last;
 
@@ -62,7 +67,8 @@ public class PageResponse<T> {
             View.LikesView.class,
             View.CommentsView.class,
             View.UserView.ListView.class,
-            View.UserView.ListAdminView.class
+            View.UserView.ListAdminView.class,
+            View.PostView.ListAdminView.class
     })
     boolean first;
 

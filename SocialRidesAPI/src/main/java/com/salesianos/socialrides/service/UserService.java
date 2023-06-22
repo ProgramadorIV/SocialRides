@@ -185,4 +185,8 @@ public class UserService {
         user.setRoles(editRole.getRoles());
         return UserResponse.toDetails(userRepository.save(user));
     }
+
+    public RoleResponse getRoles(String username){
+        return RoleResponse.of(userRepository.findByUsername(username).orElseThrow(()-> new UserNotFoundException(username)));
+    }
 }

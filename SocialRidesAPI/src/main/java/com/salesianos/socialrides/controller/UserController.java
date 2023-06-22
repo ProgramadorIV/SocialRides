@@ -69,7 +69,7 @@ public class UserController {
     }
 
     @JsonView(View.UserView.CreatedView.class)
-    @PostMapping("/auth/register/admin")
+    @PostMapping("/register/admin")
     public ResponseEntity<UserResponse> createUserWithAdminRole(@Valid @RequestPart("user") CreateUserRequest newUser,
                                                                 @RequestPart(value = "file", required = false)MultipartFile file){
 
@@ -328,7 +328,7 @@ public class UserController {
     }
 
     @JsonView({View.UserView.ListAdminView.class})
-    @GetMapping("/auth/admin/user")
+    @GetMapping("/admin/user")
     public PageResponse<UserResponse> getUsersListAdmin(
             @RequestParam(value = "$", defaultValue = "") String searchQuery,
             @PageableDefault(sort = "username", direction = Sort.Direction.DESC) Pageable pageable){
@@ -336,21 +336,27 @@ public class UserController {
 
     }
 
-    @PutMapping("/auth/admin/{username}/ban")
+    @PutMapping("/admin/{username}/ban")
     public void banUser(@PathVariable("username") String username){
         userService.banUser(username);
     }
 
-    @PutMapping("/auth/admin/{username}/unban")
+    @PutMapping("/admin/{username}/unban")
     public void unBanUser(@PathVariable("username") String username){
         userService.unBanUser(username);
     }
 
-    @PutMapping("/auth/admin/edit-role/{username}")
+    @JsonView(View.UserView.DetailsView.class)
+    @PutMapping("/admin/edit-role/{username}")
     public UserResponse editRoles(
             @PathVariable("username") String username,
             @RequestBody EditRoleRequest roleRequest){
 
         return userService.editRole(roleRequest, username);
+    }
+
+    @GetMapping("/admin/{username}/roles")
+    public RoleResponse getUserRoles(@PathVariable String username){
+        return userService.getRoles(username);
     }
 }
